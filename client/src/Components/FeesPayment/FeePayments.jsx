@@ -6,7 +6,8 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useTheme } from '@mui/material/styles';
 import FeeCard from './FeeCard';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";import { Link } from 'react-router-dom';
+
 
 
 
@@ -98,14 +99,17 @@ const FeePayments = () => {
         <Typography variant="body1" textAlign="center" color="textSecondary" sx={{ mb: 2 }}>
           Students are encouraged to apply for available scholarships. Check eligibility and submit your application below.
         </Typography>
+
+        <Link to={`/scholarship`} style={{ textDecoration: 'none' }}>
         <Button
           variant="contained"
           color="primary"
-          onClick={handleApplyForScholarship}
           sx={{ display: 'block', mx: 'auto' }}
         >
           Go to Scholarship Application
         </Button>
+        </Link>
+
       </Box>
 
       {/* FAQ Section with Accordion */}

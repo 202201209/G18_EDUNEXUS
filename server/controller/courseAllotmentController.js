@@ -123,4 +123,4 @@ const runILPmodel = (preferenceData) => {
 };
 
 
-module.exports = { courseAllotmentController, allocationBatch, approveCourseAllotment ,startAllocation}
+module.exports = { courseAllotmentController, allocationBatch, approveCourseAllotment ,startAllocation};

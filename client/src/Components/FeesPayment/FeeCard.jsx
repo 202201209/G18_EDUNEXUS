@@ -13,7 +13,7 @@ const icons = {
 
 const FeeCardContainer = styled(Card)(({ theme }) => ({
   borderRadius: '16px', // Rounded corners
-  padding: '20px',
+  padding: '10px',
   background: '#ffffff', // 3D white color
   transition: 'background 0.3s ease, transform 0.3s ease',
   boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', // Box shadow for elevation
@@ -36,7 +36,7 @@ const FeeCard = ({ fee }) => {
           {icons[fee.icon]}
           <Typography variant="h6" style={{ marginLeft: '10px' }}>{fee.type}</Typography>
         </div>
-        <Typography variant="body1" color="textSecondary">{fee.remainingDays} days remaining</Typography>
+        <Typography variant="body1" color="textSecondary" style={{ marginRight: '0px' }}>{fee.remainingDays} days remaining</Typography>
       </CardContent>
       <Typography variant="h5" style={{ margin: '10px 0' }}>Amount: ${fee.amount}</Typography>
       <Typography variant="body2" color="textSecondary" style={{ marginBottom: '10px' }}>

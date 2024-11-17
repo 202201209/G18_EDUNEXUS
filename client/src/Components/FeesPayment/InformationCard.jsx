@@ -10,9 +10,9 @@ const InformationCard = ({ heading, info }) => {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        width: '150px', // Slightly wider card
+        width: '130px', // Slightly wider card
         height: '100px', // Square shape
-        margin: 1,
+        margin: 0.3,
         borderRadius: 8, // Increased border radius
         background: '#fff',
         transition: 'transform 0.3s ease, background 0.3s, color 0.3s',
