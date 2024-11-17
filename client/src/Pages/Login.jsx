@@ -16,11 +16,18 @@ import CarouselBack from "../Components/Login/Carousel";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 // import { useContextState } from "../context/context";
-import { toast } from "react-toastify";
+import { toast } from "react-toastify"; // Import toast 
+import { Today } from "@mui/icons-material";
+import config from "../config";
 
 
-const ENDPOINT = "http://localhost:3001";
 
+
+
+
+const ENDPOINT = config.BACKEND_URL || 'http://localhost:3001';
+console.log(ENDPOINT);
+console.log("Process.env" , process.env.REACT_APP_RECAPTCHA_SITE_KEY); 
 const defaultTheme = createTheme();
 const UserRole = {
   STUDENT: "student",
@@ -72,7 +79,7 @@ export default function Login() {
         }
       }
     } catch (error) {
-      console.error("Login failed", error.response.data);
+      toast.error( error.response.data);
       navigate('/'); // Redirect to login on error
     }
   };
@@ -261,7 +268,7 @@ export default function Login() {
               />
 
               <ReCAPTCHA
-                sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}
+                sitekey={config.REACT_APP_RECAPTCHA_SITE_KEY}
                 onChange={(val) => setcapVal(val)}
               />
               <Button

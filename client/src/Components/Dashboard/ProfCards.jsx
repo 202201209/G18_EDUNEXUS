@@ -8,9 +8,12 @@ import DashCourse from './DashCourse';
 import { useState, useEffect } from 'react';
 import Calendar from "./Calendar"
 import axios from 'axios';
+ 
+ const ENDPOINT = process.env.BACKEND_URL || 'http://localhost:3001';
+
 
 function ProfCards() {
-  const Api = "http://localhost:3001/api/user/dashboard?ID=P001";
+  const Api = `${ENDPOINT}/api/user/dashboard?ID=P001`;
   const [event, setevent] = useState("");
   const [TableData, setTableData] = useState([]);
   const [error, setError] = useState(null);

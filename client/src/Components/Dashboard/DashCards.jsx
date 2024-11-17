@@ -8,9 +8,14 @@ import '../../CSS/DashCards.css';
 import DashCourse from './DashCourse';
 import axious from 'axios';
 
+ 
+ const ENDPOINT = process.env.BACKEND_URL || 'http://localhost:3001';
+
 export default function DashCards() {
   const SID=JSON.parse(localStorage.getItem("userInfo")).SID;
-  const Api = `http://localhost:3001/api/user/dashboard?SID=${SID}`;
+
+
+  const Api = `${ENDPOINT}/api/user/dashboard?SID=${SID}`;
   const [attendance , setattendance] = useState(100);
   const [notice , setnotice] = useState("");
   const [event, setevent] = useState("");

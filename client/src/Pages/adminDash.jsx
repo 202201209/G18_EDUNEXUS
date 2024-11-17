@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const ENDPOINT = 'http://localhost:3001';
+const ENDPOINT = process.env.BACKEND_URL || 'http://localhost:3001';
 const AdminDash = () => {
   const cookiesid = JSON.parse(localStorage.getItem('userInfo'));
   

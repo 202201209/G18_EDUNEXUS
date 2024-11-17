@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {startAllocation ,courseAllotmentController, approveCourseAllotment } = require('../Controller/courseAllotmentController');
+const {startAllocation ,courseAllotmentController, approveCourseAllotment } = require('../controller/courseAllotmentController');
 
 
 router.route('/start-course-allocation').get(startAllocation);

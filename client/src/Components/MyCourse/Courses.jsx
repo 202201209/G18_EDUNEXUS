@@ -8,8 +8,15 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import useAPI from "../../hooks/api";
 //integration
 import axios from "axios";
+
+ // update this url 
+//  import dotenv from 'dotenv';
+//  dotenv.config();
+ 
+//  const ENDPOINT = process.env.BACKEND_URL || 'http://localhost:3001';
+
 const Api =
-	"http://localhost:3001/api/user/dashboard/mycourses?ID=S001&Semester=5";
+	`${ENDPOINT}/api/user/dashboard/mycourses?ID=S001&Semester=5`;
 
 const parentstyle = {
 	marginTop: "100px",

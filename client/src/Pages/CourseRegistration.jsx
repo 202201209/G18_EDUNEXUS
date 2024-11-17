@@ -4,7 +4,9 @@ import '../CSS/CR.css'; // Add styles for the registration page
 import CourseCard from '../Components/CourseRegistration/CourseCard'; // Import the CourseCard component
 import CourseModal from '../Components/CourseRegistration/CourseModal'; // If you want to show modals for course details
 import { Paper } from '@mui/material';
-const ENDPOINT = "http://localhost:3001";
+
+
+const ENDPOINT = process.env.BACKEND_URL || 'http://localhost:3001';
 
 const CourseRegistration = () => {
   const [formData, setFormData] = useState({
