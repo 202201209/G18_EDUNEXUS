@@ -25,7 +25,7 @@ import config from "../config";
 
 
 
-const ENDPOINT = config.BACKEND_URL || 'http://localhost:3001';
+const ENDPOINT = process.env.BACKEND_URL || 'http://localhost:3001';
 const defaultTheme = createTheme();
 const UserRole = {
   STUDENT: "student",
