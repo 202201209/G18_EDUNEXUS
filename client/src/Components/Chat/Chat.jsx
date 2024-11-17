@@ -11,7 +11,7 @@ import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 
 
-const ENDPOINT = process.env.BACKEND_URL || 'http://localhost:3001';
+const ENDPOINT = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
 
 function Chat() {
   const [isOpen, setIsOpen] = useState(false);

@@ -6,7 +6,7 @@ import CourseModal from '../Components/CourseRegistration/CourseModal'; // If yo
 import { Paper } from '@mui/material';
 
 
-const ENDPOINT = process.env.BACKEND_URL || 'http://localhost:3001';
+const ENDPOINT = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
 
 const CourseRegistration = () => {
   const [formData, setFormData] = useState({

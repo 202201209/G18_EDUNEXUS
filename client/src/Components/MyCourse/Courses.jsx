@@ -13,7 +13,7 @@ import axios from "axios";
 //  import dotenv from 'dotenv';
 //  dotenv.config();
  
-//  const ENDPOINT = process.env.BACKEND_URL || 'http://localhost:3001';
+ const ENDPOINT = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
 
 const Api =
 	`${ENDPOINT}/api/user/dashboard/mycourses?ID=S001&Semester=5`;

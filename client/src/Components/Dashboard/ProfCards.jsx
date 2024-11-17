@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react';
 import Calendar from "./Calendar"
 import axios from 'axios';
  
- const ENDPOINT = process.env.BACKEND_URL || 'http://localhost:3001';
+ const ENDPOINT = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
 
 
 function ProfCards() {
