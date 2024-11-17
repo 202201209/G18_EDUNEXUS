@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import ReCAPTCHA from "react-google-recaptcha";
+// import ReCAPTCHA from "react-google-recaptcha";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -26,8 +26,6 @@ import config from "../config";
 
 
 const ENDPOINT = config.BACKEND_URL || 'http://localhost:3001';
-console.log(ENDPOINT);
-console.log("Process.env" , process.env.REACT_APP_RECAPTCHA_SITE_KEY); 
 const defaultTheme = createTheme();
 const UserRole = {
   STUDENT: "student",
@@ -123,7 +121,7 @@ export default function Login() {
 
   const handleLogout = () => {
     localStorage.removeItem("userinfo");
-    localStorage.removeItem("_grecaptcha");
+    // localStorage.removeItem("_grecaptcha");
 
     navigate('/');
 
@@ -267,14 +265,14 @@ export default function Login() {
                 autoComplete="off"
               />
 
-              <ReCAPTCHA
+              {/* <ReCAPTCHA
                 sitekey={config.REACT_APP_RECAPTCHA_SITE_KEY}
                 onChange={(val) => setcapVal(val)}
-              />
+              /> */}
               <Button
                 type="submit"
                 fullWidth
-                disabled={!capVal}
+                // disabled={!capVal}
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
                 style={{
