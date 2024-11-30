@@ -37,6 +37,7 @@
     "react-toastify": "^10.0.6",
     "socket.io-client": "^4.8.0",
     "styled-components": "^6.1.13",
+    "toastify": "^2.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
