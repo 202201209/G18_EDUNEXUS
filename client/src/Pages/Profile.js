@@ -7,6 +7,7 @@ import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { any } from 'prop-types';
+import { toast, ToastContainer } from "react-toastify";
 
 
 
@@ -71,8 +72,6 @@ const Profile = () => {
             setError(e);
             console.log(error);
         }
-
-
     }
 
 
@@ -111,26 +110,29 @@ const Profile = () => {
 
             );
 
-            console.log("Response:", response.data);
-            alert("Profile updated successfully!");
-        } catch (error) {
-            console.error("Error during POST request:", error);
-            alert("An error occurred while updating the profile.");
-        }
+            if (response.data.success) {
+                toast.success("Profile updated successfully!", response.data);
+              } else {
+                toast.error("Profile update failed!");
+              }
+            } catch (error) {
+              console.error("Error during POST request:", error);
+              toast.error("An error occurred while updating the profile.");
+            }
     };
 
     return (
-        <div className="container">
-            <div className="header">
+        <div id="container">
+            <div id="header">
                 <img src={logo} alt="University Logo" />
             </div>
-            <form className="profile" onSubmit={handleSubmit}>
-                <h2>Student Profile</h2>
+            <form id="profile" onSubmit={handleSubmit}>
+                <h2 id="h2">Student Profile</h2>
 
                 {/* Personal Information */}
                 <fieldset>
-                    <legend className="personal">Personal Information</legend>
-                    <div className="form-row">
+                    <legend id="personal">Personal Information</legend>
+                    <div id="form-row">
                         <TextField
                             label="Student ID"
                             name="studentId"
@@ -140,7 +142,7 @@ const Profile = () => {
                         />
                     </div>
 
-                    <div className="form-row">
+                    <div id="form-row">
                         <TextField
                             label="Student Name"
                             name="Studentname" // matches formData key
@@ -150,7 +152,7 @@ const Profile = () => {
                         />
                     </div>
 
-                    <div className="form-row">
+                    <div id="form-row">
                         <TextField
                             label="Father's Name"
                             variant="standard"
@@ -161,7 +163,7 @@ const Profile = () => {
                         />
                     </div>
 
-                    <div className="form-row">
+                    <div id="form-row">
                         <TextField
                             label="Mother's Name"
                             variant="standard"
@@ -172,173 +174,173 @@ const Profile = () => {
                         />
                     </div>
 
-                    <div className="form-row">
-                        <div className="form-group">
-                            <TextField
-                                label="bdate"
-                                type="date"
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                                variant="standard"
-                                name="bdate"
-                                value={formData.dob}
-                                fullWidth
-                                disabled
-                            />
+                    <div id="form-row">
+                        <div id="form-group">
+                        <TextField
+                            label="bdate"
+                            type="date"
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            variant="standard" 
+                            name="bdate"
+                            value={formData.dob}
+                            fullWidth
+                            disabled
+                        />
 
                         </div>
-                        <div className="form-group">
-                            <TextField
-                                label="nationality"
-                                variant="standard"
-                                name="nationality"
-                                value={formData.nationality}
-                                fullWidth
-                                disabled
+                        <div id="form-group">
+                        <TextField
+                            label="nationality"
+                            variant="standard"
+                            name="nationality"
+                            value={formData.nationality}
+                            fullWidth
+                            disabled
                             />
                         </div>
                     </div>
 
-                    <div className="form-group">
-                        <label>gender</label>
-                        <div className="radio-button-group">
-                            <label>
-                                <input
-                                    type="radio"
-                                    name="gender"
-                                    value="female"
-                                    // onChange={handleChange} 
-                                    checked={formData.gender === 'Female'}
-                                    disabled // Make this radio button read-only
-                                />
-                                female
-                            </label>
-                            <label>
-                                <input
-                                    type="radio"
-                                    name="gender"
-                                    value="male"
-                                    onChange={handleChange}
-                                    checked={formData.gender === 'Male'}
-                                    disabled // Make this radio button read-only
-                                />
-                                male
-                            </label>
-                            <label>
-                                <input
-                                    type="radio"
-                                    name="gender"
-                                    value="other"
-                                    onChange={handleChange}
-                                    checked={formData.gender === 'other'}
-                                    disabled // Make this radio button read-only
-                                />
-                                other
-                            </label>
-                            <label>
-                                <input
-                                    type="radio"
-                                    name="gender"
-                                    value="prefer-not"
-                                    onChange={handleChange}
-                                    checked={formData.gender === 'prefer-not'}
-                                    disabled // Make this radio button read-only
-                                />
-                                prefer_not_to_say
-                            </label>
-                        </div>
+                    <div id="form-group">
+                    <label>gender</label>
+                    <div id="radio-button-group">
+                        <label>
+                            <input 
+                                type="radio" 
+                                name="gender" 
+                                value="female" 
+                                // onChange={handleChange} 
+                                checked={formData.gender === 'Female'} 
+                                // disabled 
+                            /> 
+                            female
+                        </label>
+                        <label>
+                            <input 
+                                type="radio" 
+                                name="gender" 
+                                value="male" 
+                                onChange={handleChange} 
+                                checked={formData.gender === 'male'} 
+                                // disabled 
+                            /> 
+                            male
+                        </label>
+                        <label>
+                            <input 
+                                type="radio" 
+                                name="gender" 
+                                value="other" 
+                                onChange={handleChange} 
+                                checked={formData.gender === 'other'} 
+                                disabled 
+                            /> 
+                            other
+                        </label>
+                        <label>
+                            <input 
+                                type="radio" 
+                                name="gender" 
+                                value="prefer-not" 
+                                onChange={handleChange} 
+                                checked={formData.gender === 'prefer-not'} 
+                                disabled 
+                            /> 
+                            prefer_not_to_say
+                        </label>
                     </div>
+                </div>
 
                 </fieldset>
 
                 {/* Contact Information */}
                 <fieldset>
-                    <legend className="contact">Contact Information</legend>
-                    <div className="form-row">
-                        <div className="form-group">
-                            <TextField
-                                label="personalEmail"
-                                variant="standard"
-                                name="personalEmail"
-                                value={formData.personalEmail}
-                                onChange={handleChange}
-                                fullWidth />
+                    <legend id="contact">Contact Information</legend>
+                    <div id="form-row">
+                        <div id="form-group">
+                        <TextField
+                            label="personalEmail"
+                            variant="standard"
+                            name="personalEmail"
+                            value={formData.personalEmail}
+                            onChange={handleChange}
+                            fullWidth/>
                         </div>
                         <div className="form-group">
-                            <TextField
-                                label="instituteEmail"
-                                variant="standard"
-                                name="instituteemail"
-                                value={formData.instituteEmail}
-                                fullWidth
-                                disabled
+                        <TextField
+                            label="instituteEmail"
+                            variant="standard"
+                            name="instituteemail"
+                            value={formData.instituteEmail}
+                            fullWidth
+                            disabled
                             />
                         </div>
                     </div>
 
-                    <div className="form-row">
-                        <div className="form-group">
-                            <TextField
-                                label="emergency_no"
-                                variant="standard"
-                                name="phone"
-                                value={formData.phone}
-                                onChange={handleChange}
-                                fullWidth />
+                    <div id="form-row">
+                        <div id="form-group">
+                        <TextField
+                            label="emergency_no"
+                            variant="standard"
+                            name="phone"
+                            value={formData.phone}
+                            onChange={handleChange}
+                            fullWidth/>
                         </div>
                     </div>
 
-                    <div className="form-row">
-                        <div className="form-group">
-                            <TextField
-                                label="addr_street"
-                                variant="standard"
-                                name="address"
-                                value={formData.address}
-                                onChange={handleChange}
-                                fullWidth />
-                        </div>
-                        <div className="form-group">
-                            <TextField
-                                label="addr_city"
-                                variant="standard"
-                                name="city"
-                                value={formData.city}
-                                onChange={handleChange}
-                                fullWidth />
-                        </div>
-
+                    <div id="form-row">
+                    <div id="form-group">
+                        <TextField
+                            label="addr_street"
+                            variant="standard"
+                            name="address"
+                            value={formData.address}
+                            onChange={handleChange}
+                            fullWidth/>
+                    </div>
+                    <div className="form-group">
+                    <TextField
+                        label="addr_city"
+                        variant="standard"
+                        name="city"
+                        value={formData.city}
+                        onChange={handleChange}
+                        fullWidth/>
+                    </div>
+                        
                     </div>
 
-                    <div className="form-row">
-                        <div className="form-group">
-                            <TextField
-                                label="addr_state"
-                                variant="standard"
-                                name="state"
-                                value={formData.state}
-                                onChange={handleChange}
-                                fullWidth />
+                    <div id="form-row">
+                    <div id="form-group">
+                        <TextField
+                            label="addr_state"
+                            variant="standard"
+                            name="state"
+                            value={formData.state}
+                            onChange={handleChange}
+                            fullWidth/>
                         </div>
-                        <div className="form-group">
-                            <TextField
-                                label="zipcode"
-                                variant="standard"
-                                name="zip"
-                                value={formData.zip}
-                                onChange={handleChange}
-                                fullWidth />
-                        </div>
+                    <div id="form-group">
+                    <TextField
+                        label="zipcode"
+                        variant="standard"
+                        name="zip"
+                        value={formData.zip}
+                        onChange={handleChange}
+                        fullWidth/>
+                    </div>
                     </div>
                 </fieldset>
 
                 {/* Enrollment Details */}
                 <fieldset>
-                    <legend className="enrollment">Enrollment Details</legend>
-                    <div className="form-row">
-
-                        <div className="form-group">
+                    <legend id="enrollment">Enrollment Details</legend>
+                    <div id="form-row">
+                       
+                    <div className="form-group">
                             <TextField
                                 label="Program of Study"
                                 variant="standard"
@@ -348,8 +350,8 @@ const Profile = () => {
                                 disabled
                                 fullWidth />
 
-                        </div>
-                        <div className="form-group">
+                    </div>
+                    <div id="form-group">
                             <TextField
                                 label="year"
                                 variant="standard"
@@ -364,33 +366,33 @@ const Profile = () => {
 
                 {/* Admission Details */}
                 <fieldset>
-                    <legend className="adm-info">Admission Information</legend>
-                    <div className="form-row">
-                        <div className="form-group">
-                            <TextField
-                                label="admission_through"
-                                variant="standard"
-                                name="admissionthrough"
-                                value={formData.AddmissionThrough}
-                                fullWidth
-                                disabled //non editable
+                    <legend id="adm-info">Admission Information</legend>
+                    <div id="form-row">
+                        <div id="form-group">
+                        <TextField
+                            label="admission_through"
+                            variant="standard"
+                            name="admissionthrough"
+                            value={formData.AddmissionThrough}
+                            fullWidth
+                            disabled //non editable
                             />
                         </div>
-                        <div className="form-group">
-                            <TextField
-                                label="admission_rank"
-                                variant="standard"
-                                name="admissionrank"
-                                value={formData.AddmissionRank}
-                                onChange={handleChange}
-                                fullWidth
-                                disabled //non editable
+                        <div id="form-group">
+                        <TextField
+                            label="admission_rank"
+                            variant="standard"
+                            name="admissionrank"
+                            value={formData.AddmissionRank}
+                            onChange={handleChange}
+                            fullWidth
+                            disabled //non editable
                             />
                         </div>
                     </div>
                 </fieldset>
 
-                <button className="submit-button" type="submit">Submit</button>
+                <button id="submit-button" type="submit">Submit</button>
             </form>
         </div>
     );

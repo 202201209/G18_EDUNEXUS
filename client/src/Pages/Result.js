@@ -28,11 +28,11 @@ const Result = () => {
     });
 
     return (
-        <div className="card">
-            <h2>Student Report Card</h2>
+        <div id="card">
+            <h2 id="h2">Student Report Card</h2>
 
             {/* Student Details Table */}
-            <table className="details-table">
+            <table id="details-table">
                 <tbody>
                     <tr>
                         <td><strong>Name:</strong></td>
@@ -49,10 +49,10 @@ const Result = () => {
                 </tbody>
             </table>
 
-            <h3>Grade Details</h3>
+            <h3 id="h3">Grade Details</h3>
 
             {/* Grade Details Table */}
-            <table className="grade-table">
+            <table id="grade-table">
                 <thead>
                     <tr>
                         <th>Course Title</th>
@@ -75,10 +75,10 @@ const Result = () => {
                 </tbody>
             </table>
 
-            <h3>Performance Summary</h3>
+            <h3 id="h3">Performance Summary</h3>
 
             {/* Performance Summary Table */}
-            <table className="performance-table">
+            <table id="performance-table">
                 <tbody>
                     <tr>
                         <td><strong>Credits Registered:</strong></td>
