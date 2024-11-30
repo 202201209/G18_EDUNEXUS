@@ -7,6 +7,7 @@ import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { any } from 'prop-types';
+import { toast, ToastContainer } from "react-toastify";
 
 
 
@@ -71,8 +72,6 @@ const Profile = () => {
             setError(e);
             console.log(error);
         }
-
-
     }
 
 
@@ -111,12 +110,15 @@ const Profile = () => {
 
             );
 
-            console.log("Response:", response.data);
-            alert("Profile updated successfully!");
-        } catch (error) {
-            console.error("Error during POST request:", error);
-            alert("An error occurred while updating the profile.");
-        }
+            if (response.data.success) {
+                toast.success("Profile updated successfully!", response.data);
+              } else {
+                toast.error("Profile update failed!");
+              }
+            } catch (error) {
+              console.error("Error during POST request:", error);
+              toast.error("An error occurred while updating the profile.");
+            }
     };
 
     return (
