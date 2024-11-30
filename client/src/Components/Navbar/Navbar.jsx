@@ -109,7 +109,7 @@ const handleLogout = () =>{
   localStorage.removeItem("userInfo");
   localStorage.removeItem("_grecaptcha");
 
-  navigate('/login');
+  navigate('/');
 
 }
 
@@ -131,7 +131,7 @@ const handleLogout = () =>{
           </DrawerHeader>
           <Divider />
           <List>
-            {[userInfo.role==='student'?'Dashboard':"Profdashboard", 'AvailableCourses', 'Result','Mycourses'].map((text, index) => (
+            {[userInfo.role==='student'?'Dashboard':"Profdashboard", 'Result','Mycourses'].map((text, index) => (
               <ListItem key={text} disablePadding sx={{ display: 'block' }}>
                 <Link to={`/${text.toLowerCase()}`} style={{ textDecoration: 'none' }}>
                   <ListItemButton
@@ -161,9 +161,9 @@ const handleLogout = () =>{
                       ]}
                     >
                       {index === 0 && <DashboardIcon />}
-                      {index === 1 && <SchoolIcon />}
-                      {index === 2 && <ReportIcon />}
-                      {index === 3 && <CourseIcon/>}
+                      {/* {index === 1 && <SchoolIcon />} */}
+                      {index === 1 && <ReportIcon />}
+                      {index === 2 && <CourseIcon/>}
                     </ListItemIcon>
                     <ListItemText
                       primary={text}

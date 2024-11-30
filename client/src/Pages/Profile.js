@@ -1,51 +1,122 @@
 import React, { useState } from 'react';
-// import '../CSS/Profile.css';
+import '../CSS/Profile.css';
 import logo from '../Images/profile_logo.png';
 import TextField from '@mui/material/TextField';
 // import MenuItem from '@mui/material/MenuItem';
 import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { useEffect } from 'react';
+import axios from 'axios';
+import { any } from 'prop-types';
+
 
 
 
 const Profile = () => {
+    const SID = JSON.parse(localStorage.getItem("userInfo")).SID;
+    const Api = `http://localhost:3001/api/user/viewprofile?SID=${SID}`;
+    const [error, setError] = useState(null);
     const [formData, setFormData] = useState({
-        studentId: '',
-        firstName: '',
-        lastName: '',
-        fatherName: '',
-        motherName: '',
-        dob: '',
-        nationality: '',
-        gender: '',
-        instituteEmail: '',
-        personalEmail: '',
-        phone: '',
-        address: '',
-        city: '',
-        state: '',
-        zip: '',
-        country: '',
-        program: '',
-        gradYear: '',
-        tenthGrade: '',
-        twelfthGrade: '',
-        jeeMains: '',
-        jeeAdv: '',
-        disabilities: '',
+        studentId: "",
+        Studentname: "",
+        fatherName: "",
+        motherName: "",
+        dob: "",
+        nationality: "",
+        gender: "",
+        personalEmail: "",
+        instituteEmail: "",
+        phone: "",
+        address: "",
+        city: "",
+        state: "",
+        zip: "",
+        program: "",
+        Year: "",
+        AddmissionThrough: "",
+        AddmissionRank: "",
     });
+    const fetchApiData = async () => {
+        const SID = JSON.parse(localStorage.getItem("userInfo")).SID;
+        const role = JSON.parse(localStorage.getItem("userInfo")).role;
+        console.log(SID);
+        console.log(role);
+        try {
+            const response = await axios.get(Api, {
+                SID: SID,
+                role: role
+            });
+            const data = response.data;
+            setFormData({
+                studentId: SID,
+                Studentname: data.Sname || "",
+                fatherName: data.Fname || "",
+                motherName: data.Mname || "",
+                dob: data.Bdate || "",
+                nationality: data.nationality || "",
+                gender: data.gender || "",
+                personalEmail: data.EmailId || "",
+                instituteEmail: data.acadEmailID || "",
+                phone: data.Emergency_no || "",
+                address: data.Addr_street || "",
+                city: data.Addr_city || "",
+                state: data.Addr_state || "",
+                zip: data.zipcode || "",
+                program: data.program || "",
+                Year: data.year || "",
+                AddmissionThrough: data.admission_through || "",
+                AddmissionRank: data.admission_rank || "",
+
+            });
+        } catch (e) {
+            setError(e);
+            console.log(error);
+        }
+
+
+    }
+
+
+    useEffect(() => {
+        fetchApiData();
+    }, []);
+
+
 
     const handleChange = (e) => {
-        const { name, value, type, files } = e.target;
-        setFormData({
-            ...formData,
-            [name]: type === 'file' ? files[0] : value,
-        });
+        const { name, value } = e.target;
+        setFormData((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }));
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(formData); // You can replace this with an API call.
-        alert('Form submitted!');
+    const handleSubmit = async (e) => {
+        e.preventDefault(); // Prevent page refresh
+        console.log("Form data:", formData);
+
+        try {
+            const response = await axios.post(`http://localhost:3001/api/user/editprofile`, {
+                studentId: formData.studentId,
+                Sname: formData.Studentname,
+                Fname: formData.fatherName,
+                Mname: formData.motherName,
+                personalEmail: formData.personalEmail,
+                Emergency_no: formData.phone,
+                Addr_street: formData.address,
+                Addr_city: formData.city,
+                Addr_state: formData.state,
+                Zipcode: formData.zip,
+
+            }
+
+            );
+
+            console.log("Response:", response.data);
+            alert("Profile updated successfully!");
+        } catch (error) {
+            console.error("Error during POST request:", error);
+            alert("An error occurred while updating the profile.");
+        }
     };
 
     return (
@@ -61,127 +132,123 @@ const Profile = () => {
                     <legend className="personal">Personal Information</legend>
                     <div className="form-row">
                         <TextField
-                            label="sid"
-                            variant="standard"
-                            name="sid"
-                            value={formData.sid}
-                            onChange={handleChange}
+                            label="Student ID"
+                            name="studentId"
+                            value={formData.studentId}
                             fullWidth
-                            // InputLabelProps={{
-                            //     style: {
-                            //         color: 'white', // Set label color to white
-                            //     },
-                            // }}
+                            disabled
                         />
                     </div>
 
                     <div className="form-row">
                         <TextField
-                            label="sname"
-                            variant="standard"
-                            name="sname"
-                            value={formData.sname}
+                            label="Student Name"
+                            name="Studentname" // matches formData key
+                            value={formData.Studentname}
                             onChange={handleChange}
-                            fullWidth/>
+                            fullWidth
+                        />
                     </div>
 
                     <div className="form-row">
                         <TextField
-                            label="fName"
+                            label="Father's Name"
                             variant="standard"
-                            name="fName"
-                            value={formData.fName}
+                            name="fatherName" // matches formData key
+                            value={formData.fatherName}
                             onChange={handleChange}
-                            fullWidth/>
+                            fullWidth
+                        />
                     </div>
 
                     <div className="form-row">
                         <TextField
-                            label="mName"
+                            label="Mother's Name"
                             variant="standard"
-                            name="mName"
-                            value={formData.mName}
+                            name="motherName" // matches formData key
+                            value={formData.motherName}
                             onChange={handleChange}
-                            fullWidth/>
+                            fullWidth
+                        />
                     </div>
 
                     <div className="form-row">
                         <div className="form-group">
-                        <TextField
-                            label="bdate"
-                            type="date"
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                            variant="standard" 
-                            name="bdate"
-                            value={formData.bdate}
-                            fullWidth
-                            disabled
-                        />
+                            <TextField
+                                label="bdate"
+                                type="date"
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                variant="standard"
+                                name="bdate"
+                                value={formData.dob}
+                                fullWidth
+                                disabled
+                            />
 
                         </div>
                         <div className="form-group">
-                        <TextField
-                            label="nationality"
-                            variant="standard"
-                            name="nationality"
-                            value={formData.nationality}
-                            fullWidth
-                            disabled
+                            <TextField
+                                label="nationality"
+                                variant="standard"
+                                name="nationality"
+                                value={formData.nationality}
+                                fullWidth
+                                disabled
                             />
                         </div>
                     </div>
 
                     <div className="form-group">
-                    <label>gender</label>
-                    <div className="radio-button-group">
-                        <label>
-                            <input 
-                                type="radio" 
-                                name="gender" 
-                                value="female" 
-                                onChange={handleChange} 
-                                checked={formData.gender === 'female'} 
-                                disabled // Make this radio button read-only
-                            /> 
-                            female
-                        </label>
-                        <label>
-                            <input 
-                                type="radio" 
-                                name="gender" 
-                                value="male" 
-                                onChange={handleChange} 
-                                checked={formData.gender === 'male'} 
-                                disabled // Make this radio button read-only
-                            /> 
-                            male
-                        </label>
-                        <label>
-                            <input 
-                                type="radio" 
-                                name="gender" 
-                                value="other" 
-                                onChange={handleChange} 
-                                checked={formData.gender === 'other'} 
-                                disabled // Make this radio button read-only
-                            /> 
-                            other
-                        </label>
-                        <label>
-                            <input 
-                                type="radio" 
-                                name="gender" 
-                                value="prefer-not" 
-                                onChange={handleChange} 
-                                checked={formData.gender === 'prefer-not'} 
-                                disabled // Make this radio button read-only
-                            /> 
-                            prefer_not_to_say
-                        </label>
+                        <label>gender</label>
+                        <div className="radio-button-group">
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="gender"
+                                    value="female"
+                                    // onChange={handleChange} 
+                                    checked={formData.gender === 'Female'}
+                                    disabled // Make this radio button read-only
+                                />
+                                female
+                            </label>
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="gender"
+                                    value="male"
+                                    onChange={handleChange}
+                                    checked={formData.gender === 'Male'}
+                                    disabled // Make this radio button read-only
+                                />
+                                male
+                            </label>
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="gender"
+                                    value="other"
+                                    onChange={handleChange}
+                                    checked={formData.gender === 'other'}
+                                    disabled // Make this radio button read-only
+                                />
+                                other
+                            </label>
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="gender"
+                                    value="prefer-not"
+                                    onChange={handleChange}
+                                    checked={formData.gender === 'prefer-not'}
+                                    disabled // Make this radio button read-only
+                                />
+                                prefer_not_to_say
+                            </label>
+                        </div>
                     </div>
-                </div>
 
                 </fieldset>
 
@@ -190,79 +257,79 @@ const Profile = () => {
                     <legend className="contact">Contact Information</legend>
                     <div className="form-row">
                         <div className="form-group">
-                        <TextField
-                            label="personalEmail"
-                            variant="standard"
-                            name="personalemail"
-                            value={formData.personalEmail}
-                            onChange={handleChange}
-                            fullWidth/>
+                            <TextField
+                                label="personalEmail"
+                                variant="standard"
+                                name="personalEmail"
+                                value={formData.personalEmail}
+                                onChange={handleChange}
+                                fullWidth />
                         </div>
                         <div className="form-group">
-                        <TextField
-                            label="instituteEmail"
-                            variant="standard"
-                            name="instituteemail"
-                            value={formData.instituteEmail}
-                            fullWidth
-                            disabled
+                            <TextField
+                                label="instituteEmail"
+                                variant="standard"
+                                name="instituteemail"
+                                value={formData.instituteEmail}
+                                fullWidth
+                                disabled
                             />
                         </div>
                     </div>
 
                     <div className="form-row">
                         <div className="form-group">
-                        <TextField
-                            label="emergency_no"
-                            variant="standard"
-                            name="emergencyno"
-                            value={formData.emergencyNo}
-                            onChange={handleChange}
-                            fullWidth/>
+                            <TextField
+                                label="emergency_no"
+                                variant="standard"
+                                name="phone"
+                                value={formData.phone}
+                                onChange={handleChange}
+                                fullWidth />
                         </div>
                     </div>
 
                     <div className="form-row">
-                    <div className="form-group">
-                        <TextField
-                            label="addr_street"
-                            variant="standard"
-                            name="addrstreet"
-                            value={formData.addrStreet}
-                            onChange={handleChange}
-                            fullWidth/>
-                    </div>
-                    <div className="form-group">
-                    <TextField
-                        label="addr_city"
-                        variant="standard"
-                        name="addrcity"
-                        value={formData.addrCity}
-                        onChange={handleChange}
-                        fullWidth/>
-                    </div>
-                        
+                        <div className="form-group">
+                            <TextField
+                                label="addr_street"
+                                variant="standard"
+                                name="address"
+                                value={formData.address}
+                                onChange={handleChange}
+                                fullWidth />
+                        </div>
+                        <div className="form-group">
+                            <TextField
+                                label="addr_city"
+                                variant="standard"
+                                name="city"
+                                value={formData.city}
+                                onChange={handleChange}
+                                fullWidth />
+                        </div>
+
                     </div>
 
                     <div className="form-row">
-                    <div className="form-group">
-                        <TextField
-                            label="addr_state"
-                            variant="standard"
-                            name="addrstate"
-                            value={formData.addrState}
-                            onChange={handleChange}
-                            fullWidth/>
+                        <div className="form-group">
+                            <TextField
+                                label="addr_state"
+                                variant="standard"
+                                name="state"
+                                value={formData.state}
+                                onChange={handleChange}
+                                fullWidth />
                         </div>
-                    <div className="form-group">
-                    <TextField
-                        label="zipcode"
-                        variant="standard"
-                        name="zipcode"
-                        value={formData.zipcode}
-                        onChange={handleChange}
-                        fullWidth/>
-                    </div>
+                        <div className="form-group">
+                            <TextField
+                                label="zipcode"
+                                variant="standard"
+                                name="zip"
+                                value={formData.zip}
+                                onChange={handleChange}
+                                fullWidth />
+                        </div>
                     </div>
                 </fieldset>
 
@@ -270,41 +337,29 @@ const Profile = () => {
                 <fieldset>
                     <legend className="enrollment">Enrollment Details</legend>
                     <div className="form-row">
-                       
-                    <div className="form-group">
-                        <FormControl variant="standard" fullWidth>
-                            <InputLabel id="program-label">Program of Study</InputLabel>
-                            <Select
-                                labelId="program"
-                                id="program"
-                                name="program"
+
+                        <div className="form-group">
+                            <TextField
+                                label="Program of Study"
+                                variant="standard"
+                                name="Program of Study"
                                 value={formData.program}
+                                onChange={handleChange}
                                 disabled
-                            >
-                            <MenuItem value="B Tech ICT">B Tech ICT</MenuItem>
-                            <MenuItem value="B Tech ICT + CS">B Tech ICT + CS</MenuItem>
-                            <MenuItem value="B Tech EVD">B Tech EVD</MenuItem>
-                            <MenuItem value="B Tech ICT + Minors in Robotics">B Tech ICT + Minors in Robotics</MenuItem>
-                            <MenuItem value="M Tech Machine Learning">M Tech Machine Learning</MenuItem>
-                            <MenuItem value="M Tech VLSI and Embedded Systems">M Tech VLSI and Embedded Systems</MenuItem>
-                            <MenuItem value="M Tech Software Systems">M Tech Software Systems</MenuItem>
-                            <MenuItem value="M Tech Wireless Communication and Signal Processing">
-                                M Tech Wireless Communication and Signal Processing
-                            </MenuItem>
-                            </Select>
-                        </FormControl>
+                                fullWidth />
+
+                        </div>
+                        <div className="form-group">
+                            <TextField
+                                label="year"
+                                variant="standard"
+                                name="year"
+                                value={formData.Year}
+                                disabled
+                                fullWidth
+                            />
+                        </div>
                     </div>
-                    <div className="form-group">
-                        <TextField
-                            label="year"
-                            variant="standard"
-                            name="year"
-                            value={formData.year}
-                            disabled
-                            fullWidth
-                        />
-                    </div>
-                </div>
                 </fieldset>
 
                 {/* Admission Details */}
@@ -312,24 +367,24 @@ const Profile = () => {
                     <legend className="adm-info">Admission Information</legend>
                     <div className="form-row">
                         <div className="form-group">
-                        <TextField
-                            label="admission_through"
-                            variant="standard"
-                            name="admissionthrough"
-                            value={formData.admissionThrough}
-                            fullWidth
-                            disabled //non editable
+                            <TextField
+                                label="admission_through"
+                                variant="standard"
+                                name="admissionthrough"
+                                value={formData.AddmissionThrough}
+                                fullWidth
+                                disabled //non editable
                             />
                         </div>
                         <div className="form-group">
-                        <TextField
-                            label="admission_rank"
-                            variant="standard"
-                            name="admissionrank"
-                            value={formData.admissionRank}
-                            onChange={handleChange}
-                            fullWidth
-                            disabled //non editable
+                            <TextField
+                                label="admission_rank"
+                                variant="standard"
+                                name="admissionrank"
+                                value={formData.AddmissionRank}
+                                onChange={handleChange}
+                                fullWidth
+                                disabled //non editable
                             />
                         </div>
                     </div>

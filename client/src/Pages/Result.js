@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-// import '../CSS/Result.css';
+import '../CSS/Result.css';
 
 const Result = () => {
     const [studentDetails] = useState({

@@ -23,19 +23,43 @@ import {
 	Comment as CommentIcon,
 	Done as DoneIcon,
 } from "@mui/icons-material";
-
-const LabDetails = () => {
+import useAPI from "../../hooks/api";
+import { CircularProgress } from "@mui/material";
+const LabDetails = (props) => {
 	const [submissionLink, setSubmissionLink] = useState("");
 	const [comments, setComments] = useState("");
 	const [recentSubmissions, setRecentSubmissions] = useState([]);
 	const [commentsList, setCommentsList] = useState([]);
+	const [isAdding, setIsAdding] = useState(false);
 
 	const dueDate = "2024-12-15"; // Example due date
 
-	const handleSubmission = () => {
-		if (submissionLink) {
-			setRecentSubmissions([...recentSubmissions, submissionLink]);
-			setSubmissionLink("");
+	const { POST } = useAPI();
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+
+		setIsAdding(true);
+		try {
+			const submission = {
+				// ID: "S001",
+				ID: JSON.parse(localStorage.getItem("userInfo")).SID,
+				link: submissionLink,
+			};
+
+			const CourseId = 1;
+			const LabId = 14;//increase every time a new lab is added
+
+			const results = await POST(
+				`/api/user/dashboard/mycourses/${CourseId}/lab/${LabId}/submission`,
+				submission
+			);
+
+			console.log("results---->", results);
+		} catch (error) {
+			console.log(error);
+		} finally {
+			setIsAdding(false);
+			// handleClose();
 		}
 	};
 
@@ -122,10 +146,13 @@ const LabDetails = () => {
 					<Button
 						variant="contained"
 						color="primary"
-						onClick={handleSubmission}
+						onClick={handleSubmit}
 						endIcon={<SendIcon />}
 					>
-						Submit
+						Submit{" "}
+						{isAdding ? (
+							<CircularProgress size={20} sx={{ color: "black" }} />
+						) : null}
 					</Button>
 				</Box>
 
@@ -145,38 +172,6 @@ const LabDetails = () => {
 								}
 							/>
 							<Chip icon={<DoneIcon />} label="Submitted" color="success" />
-						</ListItem>
-					))}
-				</List>
-
-				<Divider sx={{ my: 3 }} />
-
-				{/* Comments Section */}
-				<Typography variant="h6" gutterBottom>
-					Comments
-				</Typography>
-				<Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-					<TextField
-						fullWidth
-						variant="outlined"
-						label="Add a Comment"
-						value={comments}
-						onChange={(e) => setComments(e.target.value)}
-						sx={{ mr: 2 }}
-					/>
-					<Button
-						variant="contained"
-						color="secondary"
-						onClick={handleCommentSubmit}
-						endIcon={<CommentIcon />}
-					>
-						Add
-					</Button>
-				</Box>
-				<List>
-					{commentsList.map((comment, index) => (
-						<ListItem key={index}>
-							<ListItemText primary={comment} />
 						</ListItem>
 					))}
 				</List>

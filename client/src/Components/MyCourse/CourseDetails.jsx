@@ -32,7 +32,10 @@ import { Modal } from "@mui/material";
 import Publish from "./Publish";
 
 import PropTypes from "prop-types";
-
+import useAPI from "../../hooks/api";
+import axios from "axios";
+import LabSubmission from "./LabSubmission";
+import AnnouncementDetails from "./AnnouncementDetails";
 const TabPanel = (props) => {
 	const { children, value, index, ...other } = props;
 	return (
@@ -61,8 +64,35 @@ const parentstyle = {
 	padding: "5px",
 	margin: "5px",
 };
+
+const Api = "http://localhost:3001/api/user/dashboard/mycourses/1/lab";
+// const SID = String(JSON.parse(localStorage.getItem("userInfo")).SID);
+const userInfo = localStorage.getItem("userInfo");
+
+const role = userInfo ? String(JSON.parse(userInfo).role) : "student";
+// console.log(SID);
+// console.log(role);
+
 const CourseDetails = () => {
-	// const { coursecode } = useParams();
+	// const { GET, POST } = useAPI();
+
+	 const [lab, setLab] = useState("");
+
+		const fetchApiData = async () => {
+			try {
+				const response = await axios.get(Api); // Corrected typo here
+				console.log(response.data); // Ensure this line is uncommented to print data
+				setLab(response.data);
+			} catch (error) {
+				console.log(error);
+			}
+		};
+
+		useEffect(() => {
+			fetchApiData(); // Ensure fetchApiData is called inside useEffect
+		}, []);
+	
+	
 	const [value, setValue] = useState(0);
 	const theme = useTheme();
 	const isMobile = useMediaQuery(theme.breakpoints.down("sm")); // Check for mobile view
@@ -76,7 +106,8 @@ const CourseDetails = () => {
 
 	const handleCloseModal = () => {
 		setIsModalOpen(false);
-	};
+};
+	
 	return (
 		<div style={{ marginTop: "20px" }}>
 			<Grid container>
@@ -127,9 +158,9 @@ const CourseDetails = () => {
 										icon={<PeopleIcon />}
 										label={value === 3 ? "Students" : ""}
 										aria-label="Students"
-                                        />
+									/>
 								</Tooltip>
-                                        {/* <Tooltip title="Attendance" arrow>
+								{/* <Tooltip title="Attendance" arrow>
                                             <Tab
                                                 icon={<EventAvailableIcon />}
                                                 label={value === 3 ? "Attendance" : ""}
@@ -144,23 +175,29 @@ const CourseDetails = () => {
 										padding: "0 20px",
 									}}
 								>
+									{
+										role === "faculty" &&
+										(
 									<button
-										className="add"
-										style={{
-											marginLeft: "auto",
-											marginRight: "20px", // Adds space between the button and the edge of the screen
-											padding: "13px 26px", // Adjusts the padding inside the button
-											fontSize: "16px", // Sets a good font size
-											borderRadius: "4px", // Rounded corners
-											backgroundColor: "#1976d2", // Primary blue color
-											color: "#fff", // White text color
-											border: "none", // Removes any border
-											cursor: "pointer", // Changes the cursor to pointer on hover
-										}}
-										onClick={handleOpenModal}
-									>
-										Announcement Something
-									</button>
+										// disabled={}
+											className="add"
+											style={{
+												marginLeft: "auto",
+												marginRight: "20px", // Adds space between the button and the edge of the screen
+												padding: "13px 26px", // Adjusts the padding inside the button
+												fontSxize: "16px", // Sets a good font size
+												borderRadius: "4px", // Rounded corners
+												backgroundColor: "#1976d2", // Primary blue color
+												color: "#fff", // White text color
+												border: "none", // Removes any border
+												cursor: "pointer", // Changes the cursor to pointer on hover
+											}}
+											onClick={handleOpenModal}
+										>
+											Announcement Something
+										</button>
+									)
+									}
 									<Modal open={isModalOpen} onClose={handleCloseModal}>
 										<Box
 											sx={{
@@ -184,9 +221,7 @@ const CourseDetails = () => {
 											}}
 										>
 											<Publish
-												addAnnouncement={(announcement) =>
-													console.log(announcement)
-												}
+												// addAnnouncement={addAnnouncement}
 												handleClose={handleCloseModal}
 											/>
 										</Box>
@@ -195,7 +230,10 @@ const CourseDetails = () => {
 							</Tabs>
 
 							<TabPanel value={value} index={0}>
-								<Typography>Lab</Typography>
+								<Typography>
+									{/* <LabSubmission /> */}
+									<AnnouncementDetails category="Lab" Lists={lab.Labs} />
+								</Typography>
 							</TabPanel>
 							<TabPanel value={value} index={1}>
 								<Typography>Lecture Notes Content</Typography>
@@ -215,7 +253,7 @@ const CourseDetails = () => {
 			</Grid>
 		</div>
 	);
-};
+   };
 
 export default CourseDetails;
 
