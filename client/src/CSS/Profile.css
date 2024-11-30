@@ -1,4 +1,4 @@
-.container {
+#container {
     max-width: 900px;
     margin: 20px auto;
     background-color: white;
@@ -8,53 +8,49 @@
     box-shadow:  5px 5px 5px #2e556e;
 }
 
-.header {
+#header {
     text-align: center;
 }
 
-.header img {
+#header img {
     width: 30%;
     height: 200px;
     object-fit: fill;
     border-radius: 8px;
 }
 
-.profile {
+#profile {
     margin-top: 20px;
 }
 
-h2 {
+#h2 {
     text-align: center;
     margin-bottom: 20px;
 }
 
-.field {
+#field {
     border: none;
     margin-bottom: 20px;
 }
 
-.personal, .contact, .enrollment, .adm-info {
+#personal, #contact, #enrollment, #adm-info {
     font-size: 1.2em;
     margin-bottom: 10px;
 }
 
-.form-row {
+#form-row {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
     padding-bottom: 10px;
 }
 
-.form-group {
+#form-group {
     display: flex;
     flex-direction: column;
     flex: 1 1 45%; 
     min-width: 200px;
     margin-bottom: 15px;
-}
-
-label {
-    margin-bottom: 5px;
 }
 
 TextField[type="fill"] {
@@ -64,12 +60,12 @@ TextField[type="fill"] {
     width: 100%;
 }
 
-.radio-button-group {
+#radio-button-group {
     display: flex;
     gap: 10px;
 }
 
-.submit-button {
+#submit-button {
     margin: 10px;
     padding: 10px 15px;
     font-size: 1em;
@@ -81,6 +77,6 @@ TextField[type="fill"] {
     /* width: 100%; */
 }
 
-.submit-button:hover {
+#submit-button:hover {
     background-color: #45a049;
 }

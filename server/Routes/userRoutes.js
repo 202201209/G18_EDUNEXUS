@@ -50,8 +50,6 @@ router.route('/course_registration').get(getCourseRegistrationList);
 router.route('/course_registration').post(registerStudentPreferences);
 
 
-
-
 router.route('/dashboard/mycourses/:CourseId/lab/:Lab_ID/submission').post(lab_submission);
 
 router.route('/dashboard/mycourses/:CourseId/lab').get(listlabs);   // listing lab to both roles
