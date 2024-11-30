@@ -33,15 +33,13 @@ function Layout() {
     };
 
   	return (
-		<Grid container>
-			<Grid item md={3} xs={3} sm={2}>
-				<Navbar />
-			</Grid>
+		<Grid container spacing={2}>
+			<Grid item md={2.5} xs={3} sm={2} >
+        <Navbar />
+      </Grid>
 
-			<Grid item md={8} xs={7} sm={8} sx={{ position: "relative" }} >
+			<Grid item md={8.5} xs={7} sm={8} sx={{ position: "relative" }} >
 				
-				
-
 				<Outlet />
 			</Grid>
 			<Grid item md={1} xs={2} sm={2} sx={{ position: "relative" }} >
@@ -141,4 +139,3 @@ function App() {
 }
 Layout.propTypes = {};
 export default App;
-

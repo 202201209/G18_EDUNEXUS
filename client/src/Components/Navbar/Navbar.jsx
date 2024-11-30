@@ -21,7 +21,7 @@ import { Paper } from '@mui/material';
 import CourseIcon from '@mui/icons-material/AutoStories';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Link, useNavigate } from 'react-router-dom';
-import { Logout } from '@mui/icons-material';
+import { Height, Logout } from '@mui/icons-material';
 import { useState, useEffect } from 'react';
 
 const drawerWidth = 260;
@@ -36,6 +36,10 @@ const openedMixin = (theme) => ({
   overflowX: 'hidden',
   borderRadius: '25px',
   marginLeft: '20px',
+  marginTop: '20px',     // Added top margin
+  marginBottom: '20px',  // Added bottom margin
+  height: 'calc(100% - 40px)', // Adjust height to account for margins
+  maxHeight: 'calc(100vh - 40px)', // Prevent overflow
   boxShadow: theme.shadows[5],
 });
 
@@ -51,6 +55,10 @@ const closedMixin = (theme) => ({
   },
   borderRadius: '25px',
   marginLeft: '20px',
+  marginTop: '20px',     // Added top margin
+  marginBottom: '20px',  // Added bottom margin
+  height: 'calc(100% - 40px)', // Adjust height to account for margins
+  maxHeight: 'calc(100vh - 40px)', // Prevent overflow
   boxShadow: theme.shadows[5],
 });
 
@@ -118,8 +126,12 @@ const handleLogout = () =>{
   };
 
   return (
-    <Box sx={{ display: 'flex', scroll: 'none' }}>
-      <Paper>
+    <Box sx={{ display: 'flex', 
+      height: '0%', 
+      maxHeight: '100vh',
+      overflow: 'hidden'
+      }}>
+      
         <CssBaseline />
         <Drawer variant="permanent" open={open}>
           <DrawerHeader>
@@ -131,7 +143,7 @@ const handleLogout = () =>{
           </DrawerHeader>
           <Divider />
           <List>
-            {[userInfo.role==='student'?'Dashboard':"Profdashboard", 'Result','Mycourses'].map((text, index) => (
+            {[userInfo.role==='student'?'Dashboard': userInfo.role==='faculty'?'profdashboard':'admindashboard', 'Result','Mycourses'].map((text, index) => (
               <ListItem key={text} disablePadding sx={{ display: 'block' }}>
                 <Link to={`/${text.toLowerCase()}`} style={{ textDecoration: 'none' }}>
                   <ListItemButton
@@ -304,7 +316,7 @@ const handleLogout = () =>{
             </ListItem>
           </List>
         </Drawer>
-      </Paper>
+      {/* </Paper> */}
     </Box>
   );
 }
