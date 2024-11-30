@@ -11,6 +11,8 @@ import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
 
 
+const ENDPOINT = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
+
 const FeePayments = () => {
   const navigate = useNavigate();
   const [semester, setSemester] = useState('');
@@ -22,7 +24,7 @@ const FeePayments = () => {
 
   const fetchFees = async (semester) => {
     try {
-      const response = await axios.get("http://localhost:3001/api/user/fees", {
+      const response = await axios.get(`${ENDPOINT}/api/user/fees`, {
         params: { studentId, semester },
       });
       setFees(response.data);
@@ -39,7 +41,7 @@ const FeePayments = () => {
 
   const handlePayment = async (feeId) => {
     try {
-      const response = await axios.post("http://localhost:3001/api/user/pay", { feeId });
+      const response = await axios.post(`${ENDPOINT}/api/user/pay`, { feeId });
       alert(response.data.message);
       fetchFees(semester); // Refresh the data after payment
     } catch (error) {
@@ -57,7 +59,7 @@ const FeePayments = () => {
   const handleDownloadReceipt = async () => {
     if (semester) {
       try {
-        const response = await axios.get(`http://localhost:3001/api/user/download-receipt/${studentId}/${semester}`, {
+        const response = await axios.get(`${ENDPOINT}/api/user/download-receipt/${studentId}/${semester}`, {
           responseType: 'blob',
         });
         const url = window.URL.createObjectURL(new Blob([response.data]));

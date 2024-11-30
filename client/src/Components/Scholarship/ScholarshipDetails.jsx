@@ -16,6 +16,8 @@ import {
 import { Twitter, LinkedIn, Facebook } from '@mui/icons-material';
 import EligibilityCheck from './EligibilityCheck';
 
+const ENDPOINT = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
+
 const ScholarshipDetails = () => {
   const [applications, setApplications] = useState([]);
   const [newApplication, setNewApplication] = useState({
@@ -31,7 +33,7 @@ const ScholarshipDetails = () => {
   const fetchApplications = async () => {
     try {
       const response = await axios.get(
-        'http://localhost:3001/api/user/scholarship/applications'
+        `${ENDPOINT}/api/user/scholarship/applications`
       );
       const studentApplications = response.data.filter(
         (app) => app.student_id === newApplication.student_id
