@@ -2,7 +2,6 @@ import './App.css';
 import React from 'react'; 
 import ProtectedRoute from './ProtectedRoute';
 import Chat from './Components/Chat/Chat'; 
-import AllCourse from './Pages/AllCourse'; 
 import { Grid } from "@mui/material";
 import Navbar from "./Components/Navbar/Navbar";
 import Login from "./Pages/Login";
@@ -12,7 +11,6 @@ import theme from "./Components/theme";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import { Avatar, Box } from "@mui/material";
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import ProfDashboard from "./Pages/ProfDashboard";
 import Courses from "./Components/MyCourse/Courses";
 import CourseRegistration from './Pages/CourseRegistration';
@@ -25,6 +23,7 @@ import Result from './Pages/Result'
 import LabSubmission from "./Components/MyCourse/LabSubmission";
 import CourseDetails from "./Components/MyCourse/CourseDetails";
 import FeePayments from './Components/FeesPayment/FeePayments';
+import NotFound from './Components/404NotFound';
 
 function Layout() {
   const navigate = useNavigate();
@@ -55,9 +54,11 @@ function Layout() {
 						display: "flex",
 					}}
 				>
+					{
+            role === 'student' && <Avatar alt="User image" src="./favicon.ico"onClick={handleAvatarClick} 
+            style={{ cursor: "pointer" }}/>
+          }
 					
-					<Avatar alt="User image" src="./favicon.ico"onClick={handleAvatarClick} 
-                        style={{ cursor: "pointer" }}/>
 					<Chat></Chat>
 
 				</Box>
@@ -88,10 +89,7 @@ const router = createBrowserRouter([
         path: '/ProfDashboard',
         element:<ProtectedRoute element={ProfDashboard} allowedRoles={['faculty']} />,
       },
-      {
-        path: '/AvailableCourses',
-        element: <ProtectedRoute element={AllCourse} allowedRoles={['faculty, admin, student']} />,
-      },
+      
 	    {
 		    path: "/Mycourses",
 		    element: <ProtectedRoute element={Courses} allowedRoles={['faculty', 'student']} />
@@ -119,6 +117,10 @@ const router = createBrowserRouter([
       {
         path: '/adminDashboard',
         element: <ProtectedRoute element={AdminDashboard} allowedRoles={['admin']} />,
+      },
+      {
+        path: '*',
+        element: <NotFound />,
       }
     ],
   },

@@ -13,7 +13,6 @@ const getApplications = async (req, res) => {
 
 // Create a new application
 const createApplication = async (req, res) => {
-    console.log(req.body);
   try {
     const { student_id, application_year, full_name, email, phone } = req.body;
     const application_id = `APP-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;

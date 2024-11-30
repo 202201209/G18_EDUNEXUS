@@ -12,6 +12,8 @@ const {roleBasedDashboard} = require('../../server/middleWare/RoleVerifier');
 
 const { getApplications, createApplication } = require("../controller/applicationController");
 
+const { getFees , payFee , downloadReceipt } = require("../controller/feeController");
+
 const router = express.Router();
 router.route('/login').post(authUser);
 router.route('/authRole').post(protect,authRole);
@@ -24,6 +26,11 @@ router.route('/dashboard/mycourses/:CID/notes').get(courseNotes);
 
 router.route('/scholarship/applications').get(getApplications);
 router.route('/scholarship/applications').post(createApplication);
+
+router.route('/fees').get(getFees)
+router.route('/pay').post(payFee)
+router.route('/download-receipt/:studentId/:semester').get(downloadReceipt)
+
 
 
 

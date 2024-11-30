@@ -1,24 +1,51 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import {
-  Grid, Typography, FormControl, Select, MenuItem, Button, Box, Accordion, AccordionSummary, AccordionDetails,
-  useMediaQuery
+  Grid, Typography, FormControl, Select, MenuItem, Button, Box, useMediaQuery,
+  Accordion, AccordionSummary, AccordionDetails, Paper, Divider,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useTheme } from '@mui/material/styles';
 import FeeCard from './FeeCard';
-import { useNavigate } from "react-router-dom";import { Link } from 'react-router-dom';
-
-
+import { useNavigate } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 
 const FeePayments = () => {
   const navigate = useNavigate();
   const [semester, setSemester] = useState('');
+  const [fees, setFees] = useState([]);
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
+  const studentId = JSON.parse(localStorage.getItem("userInfo")).SID;
+
+  const fetchFees = async (semester) => {
+    try {
+      const response = await axios.get("http://localhost:3001/api/user/fees", {
+        params: { studentId, semester },
+      });
+      setFees(response.data);
+    } catch (error) {
+      console.error("Failed to fetch fees", error);
+    }
+  };
+
   const handleSemesterChange = (event) => {
-    setSemester(event.target.value);
+    const selectedSemester = event.target.value;
+    setSemester(selectedSemester);
+    fetchFees(selectedSemester);
+  };
+
+  const handlePayment = async (feeId) => {
+    try {
+      const response = await axios.post("http://localhost:3001/api/user/pay", { feeId });
+      alert(response.data.message);
+      fetchFees(semester); // Refresh the data after payment
+    } catch (error) {
+      console.error("Payment failed", error);
+      alert("Payment failed");
+    }
   };
 
   const handleApplyForScholarship = () => {
@@ -27,69 +54,97 @@ const FeePayments = () => {
     navigate('/scholarship');
   };
 
-  const handleDownloadReceipt = () => {
+  const handleDownloadReceipt = async () => {
     if (semester) {
-      alert(`Downloading receipt for Semester ${semester}`);
+      try {
+        const response = await axios.get(`http://localhost:3001/api/user/download-receipt/${studentId}/${semester}`, {
+          responseType: 'blob',
+        });
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `Semester_${semester}_Receipt.pdf`);
+        document.body.appendChild(link);
+        link.click();
+      } catch (error) {
+        console.error('Error downloading receipt', error);
+        alert('Failed to download receipt');
+      }
+    } else {
+      alert('Please select a semester');
     }
   };
 
-  const fees = [
-    { id: 1, type: 'Tuition', remainingDays: 15, icon: 'school', amount: 1000, details: 'Tuition fee for the semester' },
-    { id: 2, type: 'Hostel', remainingDays: 30, icon: 'house', amount: 500, details: 'Hostel accommodation fee' },
-    { id: 3, type: 'Medical', remainingDays: 5, icon: 'local_hospital', amount: 200, details: 'Medical insurance fee' },
-  ];
 
   return (
-    <Box sx={{ padding: '20px', backgroundColor: '#f0f4f8', minHeight: '100vh' }}>
-      <Typography variant="h4" gutterBottom textAlign="center">
+    <>
+    <Box sx={{ padding: '20px', backgroundColor: '#f7faff', minHeight: '100vh' }}>
+      <Typography variant="h4" gutterBottom textAlign="center" sx={{ fontWeight: 'bold', color: '#0d47a1' }}>
         Fee Payment Portal
       </Typography>
 
       <Typography variant="body1" textAlign="center" color="textSecondary" sx={{ mb: 2 }}>
-        Please select your semester to view fee details and download your receipt.
+        Select your semester to view fee details, make payments, and download receipts.
       </Typography>
 
-      <FormControl fullWidth sx={{ mb: 2, display: 'flex', alignItems: 'center' }}>
+      <FormControl fullWidth sx={{ mb: 3, display: 'flex', alignItems: 'center' }}>
         <Select
-          labelId="semester-select-label"
           value={semester}
           onChange={handleSemesterChange}
-          sx={{ width: isSmallScreen ? '100%' : '300px', textAlign: 'center' }}
+          sx={{
+            width: isSmallScreen ? '100%' : '300px',
+            textAlign: 'center',
+            backgroundColor: '#ffffff',
+            borderRadius: '8px',
+          }}
         >
-          <MenuItem value="" disabled>Select Semester</MenuItem>
+          <MenuItem value="" disabled>
+            Select Semester
+          </MenuItem>
           {[...Array(8)].map((_, i) => (
-            <MenuItem key={i + 1} value={i + 1}>Semester {i + 1}</MenuItem>
+            <MenuItem key={i + 1} value={i + 1}>
+              Semester {i + 1}
+            </MenuItem>
           ))}
         </Select>
       </FormControl>
 
       {semester && (
         <>
-          <Typography variant="h5" gutterBottom textAlign="center">
+          <Typography variant="h5" gutterBottom textAlign="center" sx={{ color: '#1565c0' }}>
             Fees for Semester {semester}
           </Typography>
+          <br></br>
 
           <Grid container spacing={3} justifyContent="center">
-            {fees.map(fee => (
+            {fees.map((fee) => (
               <Grid item xs={12} sm={6} md={4} key={fee.id}>
-                <FeeCard fee={fee} />
+                <FeeCard fee={fee} onPayment={handlePayment} />
               </Grid>
             ))}
           </Grid>
 
+<br></br>
           <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
             <Button
               variant="outlined"
               color="secondary"
               onClick={handleDownloadReceipt}
-              disabled={!semester}
-              sx={{ width: 'fit-content' }}
+              sx={{
+                padding: '10px 20px',
+                borderRadius: '8px',
+                background: '#0d47a1',
+                color: '#ffffff',
+                '&:hover': { backgroundColor: '#1565c0' },
+              }}
             >
               Download Receipt for Semester {semester}
             </Button>
           </Box>
         </>
       )}
+
+      <br></br>
 
       {/* Scholarship Application Section */}
       <Box sx={{ mt: 4, p: 3, border: '1px solid #ccc', borderRadius: '8px', backgroundColor: '#f7faff' }}>
@@ -111,6 +166,8 @@ const FeePayments = () => {
         </Link>
 
       </Box>
+
+      <br></br>
 
       {/* FAQ Section with Accordion */}
       <Box sx={{ mt: 4 }}>
@@ -163,7 +220,26 @@ const FeePayments = () => {
         </Accordion>
       </Box>
 
+      <br></br>
+
+      <Paper elevation={3} sx={{ padding: '20px', backgroundColor: '#e3f2fd', textAlign: 'center' }}>
+        <Typography variant="h6" sx={{ mb: 1, fontWeight: 'bold', color: '#0d47a1' }}>
+          For Queries, Contact the College Administration
+        </Typography>
+        <Typography variant="body1" sx={{ mb: 1 }}>
+          Email: support@college.edu
+        </Typography>
+        <Typography variant="body1" sx={{ mb: 1 }}>
+          Phone: +91-9876543210
+        </Typography>
+        <Typography variant="body2" color="textSecondary">
+          Office Hours: Mon-Fri, 9:00 AM to 5:00 PM
+        </Typography>
+      </Paper>
+
     </Box>
+
+    </>
   );
 };
 

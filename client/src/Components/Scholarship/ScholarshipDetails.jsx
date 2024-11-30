@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
 import {
   Box,
   Typography,
@@ -12,61 +11,93 @@ import {
   Card,
   CardContent,
   IconButton,
+  Tooltip,
 } from '@mui/material';
-import { Twitter, LinkedIn, Facebook } from '@mui/icons-material'; // Import social media icons
+import { Twitter, LinkedIn, Facebook } from '@mui/icons-material';
 import EligibilityCheck from './EligibilityCheck';
 
 const ScholarshipDetails = () => {
   const [applications, setApplications] = useState([]);
   const [newApplication, setNewApplication] = useState({
-    student_id: '',
+    student_id: JSON.parse(localStorage.getItem('userInfo')).SID,
     application_year: new Date().getFullYear(),
     full_name: '',
     email: '',
     phone: '',
   });
 
-  // Fetch all applications from the server
+  const [errors, setErrors] = useState({ full_name: '', email: '', phone: '' });
+
   const fetchApplications = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/api/user/scholarship/applications');
-      const sortedApplications = response.data.sort(
-        (a, b) => new Date(b.created_at) - new Date(a.created_at)
+      const response = await axios.get(
+        'http://localhost:3001/api/user/scholarship/applications'
       );
-      setApplications(sortedApplications); // Set all applications
+      const studentApplications = response.data.filter(
+        (app) => app.student_id === newApplication.student_id
+      );
+      setApplications(studentApplications);
     } catch (error) {
       console.error('Error fetching applications:', error);
     }
   };
 
-  // Get student ID from cookies and set it in the application state
   useEffect(() => {
     fetchApplications();
   }, []);
 
-  // Handle form submission
+  const validateFields = () => {
+    let valid = true;
+    const newErrors = { full_name: '', email: '', phone: '' };
+
+    if (!newApplication.full_name.trim()) {
+      newErrors.full_name = 'Full Name is required.';
+      valid = false;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(newApplication.email)) {
+      newErrors.email = 'Enter a valid email address.';
+      valid = false;
+    }
+
+    if (!/^\d{10}$/.test(newApplication.phone)) {
+      newErrors.phone = 'Phone number must be 10 digits.';
+      valid = false;
+    }
+
+    setErrors(newErrors);
+    return valid;
+  };
+
   const handleSubmit = async () => {
-    try {
-      await axios.post('http://localhost:3001/api/user/scholarship/applications', newApplication);
-      alert('Application submitted successfully!');
-      fetchApplications();
-      setNewApplication({
-        student_id: '',
-        application_year: new Date().getFullYear(),
-        full_name: '',
-        email: '',
-        phone: '',
-      });
-    } catch (error) {
-      console.error('Error submitting application:', error);
-      alert('Failed to submit the application.');
+    if (validateFields()) {
+      try {
+        await axios.post(
+          'http://localhost:3001/api/user/scholarship/applications',
+          newApplication
+        );
+        alert('Application submitted successfully!');
+        fetchApplications();
+        setNewApplication({
+          student_id: JSON.parse(localStorage.getItem('userInfo')).SID,
+          application_year: new Date().getFullYear(),
+          full_name: '',
+          email: '',
+          phone: '',
+        });
+        setErrors({ full_name: '', email: '', phone: '' });
+      } catch (error) {
+        console.error('Error submitting application:', error);
+        alert('Failed to submit the application.');
+      }
     }
   };
 
   return (
     <Box
       sx={{
-        padding: '3rem 1rem',
+        padding: { xs: '2rem 1rem', sm: '3rem 2rem' },
         backgroundColor: '#e0f7fa',
         maxWidth: '1200px',
         margin: 'auto',
@@ -75,89 +106,123 @@ const ScholarshipDetails = () => {
       <Paper
         elevation={8}
         sx={{
-          padding: '2rem',
+          padding: { xs: '1.5rem', sm: '2rem' },
           backgroundColor: '#ffffff',
           borderRadius: '16px',
           boxShadow: '0 10px 15px rgba(0, 0, 0, 0.1)',
         }}
       >
-        {/* Title and Countdown */}
-        <Typography variant="h4" sx={{ fontWeight: '700', color: '#0d47a1', mb: 3 }}>
+        {/* Title and Intro */}
+        <Typography
+          variant="h4"
+          sx={{
+            fontWeight: '700',
+            color: '#0d47a1',
+            mb: { xs: 2, sm: 3 },
+            textAlign: 'center',
+          }}
+        >
           Merit Cum Means Scholarship
         </Typography>
 
-        <Typography variant="body1" sx={{ lineHeight: 1.8, color: '#1a237e', mt: 2 }}>
-          The XYZ College Scholarship is designed to support outstanding students by covering tuition and additional stipends. Learn more and apply below.
+        <Typography
+          variant="body1"
+          sx={{
+            lineHeight: 1.8,
+            color: '#1a237e',
+            textAlign: 'center',
+            mt: { xs: 1, sm: 2 },
+          }}
+        >
+          The XYZ College Scholarship supports outstanding students by covering
+          tuition and additional stipends. Learn more and apply below.
         </Typography>
 
-        <Divider sx={{ my: 3 }} />
+        <Divider sx={{ my: { xs: 2, sm: 3 } }} />
 
-        {/* Scholarship Amount & Benefits */}
-        <Typography variant="h6" sx={{ color: '#1565c0', mt: 4 }}>
+        {/* Scholarship Benefits */}
+        <Typography
+          variant="h6"
+          sx={{ color: '#1565c0', mt: { xs: 2, sm: 4 }, textAlign: 'center' }}
+        >
           Scholarship Amount & Benefits
         </Typography>
+
+        {/* ...Benefits section remains unchanged... */}
         <Grid container spacing={2} sx={{ mt: 2 }}>
-          {[
-            { title: 'Total Amount', value: 'INR 50,000' },
-            { title: 'Stipend & Books', value: 'Tuition, monthly stipend, and book allowance.' },
-            { title: 'Additional Benefits', value: 'Free access to workshops and networking events.' },
-          ].map((benefit, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
-              <Paper
-                sx={{
-                  padding: '1.5rem',
-                  backgroundColor: '#bbdefb',
-                  borderRadius: '8px',
-                  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  height: '150px',
-                  textAlign: 'center',
-                  transition: 'transform 0.3s',
-                  '&:hover': { transform: 'scale(1.05)' },
-                }}
-              >
-                <Typography variant="h6" sx={{ color: '#0d47a1', fontWeight: 'bold' }}>
-                  {benefit.title}
-                </Typography>
-                <Typography variant="body1" sx={{ color: '#1a237e', mt: 1 }}>
-                  {benefit.value}
-                </Typography>
-              </Paper>
-            </Grid>
-          ))}
-        </Grid>
+        {[
+          { title: 'Total Amount', value: 'INR 50,000' },
+          { title: 'Stipend & Books', value: 'Tuition, monthly stipend, and book allowance.' },
+          { title: 'Additional Benefits', value: 'Free access to workshops and networking events.' },
+        ].map((benefit, index) => (
+          <Grid item xs={12} sm={6} md={4} key={index}>
+            <Paper
+              sx={{
+                padding: '1.5rem',
+                backgroundColor: '#bbdefb',
+                borderRadius: '8px',
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '150px',
+                textAlign: 'center',
+                transition: 'transform 0.3s',
+                '&:hover': { transform: 'scale(1.05)' },
+              }}
+            >
+              <Typography variant="h6" sx={{ color: '#0d47a1', fontWeight: 'bold' }}>
+                {benefit.title}
+              </Typography>
+              <Typography variant="body1" sx={{ color: '#1a237e', mt: 1 }}>
+                {benefit.value}
+              </Typography>
+            </Paper>
+          </Grid>
+        ))}
+      </Grid>
 
-        <Divider sx={{ my: 3 }} />
 
-        {/* Deadline Information */}
-        <Typography variant="h6" sx={{ color: '#1565c0', mt: 4 }}>
+        {/* Deadline */}
+        <Divider sx={{ my: { xs: 2, sm: 3 } }} />
+        <Typography
+          variant="h6"
+          sx={{ color: '#1565c0', mt: { xs: 2, sm: 4 }, textAlign: 'center' }}
+        >
           Scholarship Deadline
         </Typography>
-        <Typography variant="body1" sx={{ color: '#1a237e', mb: 4 }}>
-          The last date to submit your application is <strong>December 31, 2024</strong>. Don't miss the chance to apply!
+        <Typography
+          variant="body1"
+          sx={{ color: '#1a237e', textAlign: 'center', mb: { xs: 2, sm: 4 } }}
+        >
+          The last date to submit your application is{' '}
+          <strong>December 31, 2024</strong>. Don't miss the chance to apply!
         </Typography>
-
-        <Box sx={{ my: 4 }} />
 
         {/* Eligibility Check */}
         <EligibilityCheck />
 
-        <Divider sx={{ my: 3 }} />
+        <Divider sx={{ my: { xs: 2, sm: 3 } }} />
 
         {/* Application Form */}
-        <Typography variant="h6" sx={{ color: '#1565c0', mt: 4 }}>
+        <Typography variant="h6" sx={{ color: '#1565c0', mt: { xs: 2, sm: 4 } }}>
           Apply for Scholarship
         </Typography>
-        <Box sx={{ mt: 2, mb: 4 }}>
+        <Box
+          component="form"
+          sx={{
+            mt: { xs: 1, sm: 2 },
+            mb: { xs: 2, sm: 4 },
+          }}
+        >
+          {/* ...Form section remains unchanged... */}
           <TextField
             label="Student ID"
             variant="outlined"
             fullWidth
             value={JSON.parse(localStorage.getItem("userInfo")).SID}
-            disabled // Make the field non-editable
+            disabled
             sx={{ mb: 2 }}
           />
           <TextField
@@ -166,6 +231,8 @@ const ScholarshipDetails = () => {
             fullWidth
             value={newApplication.full_name}
             onChange={(e) => setNewApplication({ ...newApplication, full_name: e.target.value })}
+            error={!!errors.full_name}
+            helperText={errors.full_name}
             sx={{ mb: 2 }}
           />
           <TextField
@@ -174,6 +241,8 @@ const ScholarshipDetails = () => {
             fullWidth
             value={newApplication.email}
             onChange={(e) => setNewApplication({ ...newApplication, email: e.target.value })}
+            error={!!errors.email}
+            helperText={errors.email}
             sx={{ mb: 2 }}
           />
           <TextField
@@ -182,6 +251,8 @@ const ScholarshipDetails = () => {
             fullWidth
             value={newApplication.phone}
             onChange={(e) => setNewApplication({ ...newApplication, phone: e.target.value })}
+            error={!!errors.phone}
+            helperText={errors.phone}
             sx={{ mb: 2 }}
           />
           <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
@@ -196,65 +267,77 @@ const ScholarshipDetails = () => {
           </Box>
         </Box>
 
-        <Divider sx={{ my: 3 }} />
-
-        {/* All Submitted Applications */}
-        <Typography variant="h6" sx={{ color: '#1565c0', mt: 4 }}>
-          All Submitted Applications
+        {/* Submitted Applications */}
+        <Divider sx={{ my: { xs: 2, sm: 3 } }} />
+        <Typography
+          variant="h6"
+          sx={{ color: '#1565c0', mt: { xs: 2, sm: 4 }, textAlign: 'center' }}
+        >
+          Your Submitted Applications
         </Typography>
-        <br />
-        <Grid container spacing={3}>
-          {applications.length > 0 ? (
-            applications.map((app) => (
-              <Grid item xs={12} sm={6} md={4} key={app.id}>
-                <Card sx={{ boxShadow: 3, borderRadius: 2 }}>
+        {applications.length > 0 ? (
+          <Grid container spacing={2} sx={{ mt: 2 }}>
+            {applications.map((app, index) => (
+              <Grid item xs={12} sm={6} key={index}>
+                <Card
+                  sx={{
+                    backgroundColor: '#e3f2fd',
+                    padding: 2,
+                    borderRadius: '8px',
+                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                  }}
+                >
                   <CardContent>
-                    <Typography variant="h6" sx={{ color: '#0d47a1' }}>
-                      {app.full_name}
+                    <Typography variant="subtitle1">
+                      <strong>Full Name:</strong> {app.full_name}
                     </Typography>
-                    <Typography variant="body2">Year: {app.application_year}</Typography>
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        mt: 1,
-                        color:
-                          app.status === 'Accepted'
-                            ? 'green'
-                            : app.status === 'Rejected'
-                            ? 'red'
-                            : 'orange',
-                      }}
-                    >
-                      Status: {app.status}
+                    <Typography variant="subtitle1">
+                      <strong>Application Id:</strong> {app.application_id}
+                    </Typography>
+                    <Typography variant="subtitle1">
+                      <strong>Year:</strong> {app.application_year}
+                    </Typography>
+                    <Typography variant="subtitle1">
+                      <strong>Status:</strong> {app.status}
                     </Typography>
                   </CardContent>
                 </Card>
               </Grid>
-            ))
-          ) : (
-            <Typography variant="body1" sx={{ color: '#1a237e', textAlign: 'center', mt: 3 }}>
-              No applications submitted yet.
-            </Typography>
-          )}
-        </Grid>
+            ))}
+          </Grid>
+        ) : (
+          <Typography
+            variant="body1"
+            sx={{ textAlign: 'center', color: '#1a237e', mt: 2 }}
+          >
+            No applications submitted yet.
+          </Typography>
+        )}
 
-        {/* Refer a Friend Section */}
-        <Typography variant="h6" sx={{ color: '#1565c0', mt: 4 }}>
-          Refer a Friend
+        {/* Refer to Friend */}
+        <Divider sx={{ my: { xs: 2, sm: 3 } }} />
+        <Typography
+          variant="h6"
+          sx={{ color: '#1565c0', mt: { xs: 2, sm: 4 }, textAlign: 'center' }}
+        >
+          Refer this Scholarship to a Friend
         </Typography>
-        <Typography variant="body1" sx={{ color: '#1a237e', mb: 2 }}>
-          Know someone who might be interested? Share the opportunity!
-        </Typography>
-        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          <IconButton href="#" target="_blank">
-            <Twitter sx={{ color: '#1DA1F2' }} />
-          </IconButton>
-          <IconButton href="#" target="_blank">
-            <LinkedIn sx={{ color: '#0077B5' }} />
-          </IconButton>
-          <IconButton href="#" target="_blank">
-            <Facebook sx={{ color: '#3b5998' }} />
-          </IconButton>
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+          <Tooltip title="Share on Twitter">
+            <IconButton color="primary">
+              <Twitter />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Share on LinkedIn">
+            <IconButton color="primary">
+              <LinkedIn />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Share on Facebook">
+            <IconButton color="primary">
+              <Facebook />
+            </IconButton>
+          </Tooltip>
         </Box>
       </Paper>
     </Box>
@@ -262,3 +345,4 @@ const ScholarshipDetails = () => {
 };
 
 export default ScholarshipDetails;
+

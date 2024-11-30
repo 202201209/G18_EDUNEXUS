@@ -6,7 +6,7 @@ import InformationDetails from '../Components/FeesPayment/InformationDetails';
 const FeePays = () => {
   return (
     <div style={{ backgroundColor: '#f0f4f8' }}>
-      <InformationDetails />
+      {/* <InformationDetails /> */}
       <FeePayments />
     </div>
   );

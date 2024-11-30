@@ -16,6 +16,9 @@ import {
 	Close as CloseIcon,
 	Announcement as AnnouncementIcon,
 } from "@mui/icons-material";
+import { DatePicker } from "@mui/lab";
+import useAPI from "../../hooks/api";
+import { CircularProgress } from "@mui/material";
 
 const AnnouncementForm = ({ addAnnouncement, handleClose }) => {
 	const [title, setTitle] = useState("");
@@ -23,8 +26,38 @@ const AnnouncementForm = ({ addAnnouncement, handleClose }) => {
 	const [category, setCategory] = useState("General");
 	const [attachedFiles, setAttachedFiles] = useState([]);
 
+	const { POST } = useAPI();
+
 	const [attachedLinks, setAttachedLinks] = useState([]);
 	const [link, setLink] = useState("");
+
+	const [date, setDate] = useState("");
+	const [time, setTime] = useState("");
+
+	const handleDateChange_ = (e) => {
+		setDate(e.target.value);
+	};
+
+	const handleTimeChange = (e) => {
+		let inputTime = e.target.value;
+		if (inputTime) {
+			// Convert to 12-hour format
+			const [hours, minutes] = inputTime.split(":");
+			let period = "AM";
+			let formattedHours = parseInt(hours, 10);
+
+			if (formattedHours >= 12) {
+				period = "PM";
+				if (formattedHours > 12) {
+					formattedHours -= 12;
+				}
+			} else if (formattedHours === 0) {
+				formattedHours = 12;
+			}
+
+			setTime(`${formattedHours}:${minutes} ${period}`);
+		}
+	};
 
 	const handleAddLink = () => {
 		if (link.trim() !== "") {
@@ -35,30 +68,42 @@ const AnnouncementForm = ({ addAnnouncement, handleClose }) => {
 	const handleLinkRemove = (linkToRemove) => {
 		setAttachedLinks(attachedLinks.filter((link) => link !== linkToRemove));
 	};
-	const handleSubmit = (e) => {
+	const [dueDate, setDueDate] = useState(null);
+	const handleDateChange = (newDate) => {
+		setDueDate(newDate);
+	};
+	
+	const [isAdding, setIsAdding] = useState(false);
+
+	const handleSubmit = async (e) => {
 		e.preventDefault();
-		if (title && content) {
-			addAnnouncement({
+
+		setIsAdding(true);
+		try {
+			const announcement = {
+				ID: "P001",
+				// ID: JSON.parse(localStorage.getItem("userInfo")).SID,
+				link,
 				title,
-				content,
-				category,
-				date: new Date().toISOString().split("T")[0],
-				isPinned: false,
-			});
-			setTitle("");
-			setContent("");
-			setCategory("General");
-			setAttachedFiles([]);
+				description: content,
+				due_time: date + " " + time,
+			};
+
+			const CourseId = 1;
+
+			const results = await POST(
+				`/api/user/dashboard/mycourses/${CourseId}/lab/assignment`,
+				announcement
+			);
+
+			console.log("results---->", results);
+		} catch (error) {
+			console.log(error);
+		} finally {
+			setIsAdding(false);
+			handleClose();
 		}
 	};
-
-	// const handleFileChange = (e) => {
-	// 	setAttachedFiles([...attachedFiles, ...Array.from(e.target.files)]);
-	// };
-
-	// const handleFileRemove = (file) => {
-	// 	setAttachedFiles(attachedFiles.filter((f) => f !== file));
-	// };
 
 	return (
 		<Box
@@ -117,11 +162,36 @@ const AnnouncementForm = ({ addAnnouncement, handleClose }) => {
 					onChange={(e) => setCategory(e.target.value)}
 					label="Category"
 				>
-					<MenuItem value="General">Lab</MenuItem>
+					<MenuItem value="Lab">Lab</MenuItem>
 					<MenuItem value="Exam">Class Note</MenuItem>
 					<MenuItem value="Assignment">Assignment</MenuItem>
 				</Select>
 			</FormControl>
+			{category === "Lab" ? (
+				<div>
+					<label htmlFor="calendar">Select a date:</label>
+					<input
+						type="date"
+						id="calendar"
+						name="calendar"
+						value={date}
+						onChange={handleDateChange_}
+					/>
+					<label htmlFor="time">Select a time:</label>
+					<input
+						type="time"
+						id="time"
+						name="time"
+						value={time}
+						onChange={handleTimeChange}
+					/>
+					<div>
+						<p>Selected Date: {date}</p>
+						<p>Selected Time: {time}</p>
+					</div>
+				</div>
+			) : null}
+
 			<TextField
 				label="Paste URL"
 				variant="outlined"
@@ -161,6 +231,7 @@ const AnnouncementForm = ({ addAnnouncement, handleClose }) => {
 			</Stack>
 
 			<Button
+				onClick={handleSubmit}
 				type="submit"
 				variant="contained"
 				color="primary"
@@ -175,7 +246,10 @@ const AnnouncementForm = ({ addAnnouncement, handleClose }) => {
 					},
 				}}
 			>
-				Add Announcement
+				Add Announcement{" "}
+				{isAdding ? (
+					<CircularProgress size={20} sx={{ color: "black" }} />
+				) : null}
 			</Button>
 		</Box>
 	);

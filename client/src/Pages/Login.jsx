@@ -25,7 +25,7 @@ import config from "../config";
 
 
 
-const ENDPOINT = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
+const ENDPOINT = process.env.REACT_APP_BACKEND_URL||'http://localhost:3001';
 console.log(ENDPOINT);
 const defaultTheme = createTheme();
 const UserRole = {

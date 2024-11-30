@@ -13,7 +13,7 @@ const CourseCard2 = ({ courseName, instructor, avatarLetter, courseCode }) => {
 				<div
 					className="main"
 					onClick={() => {
-						navigate(`/Mycourses/course-details`);
+						navigate(`/Mycourses/:courseId`);
 					}}
 					style={{ cursor: "pointer" }}
 				>
