@@ -41,9 +41,9 @@ router.route('/dashboard').get(dashboard);
 router.route('/dashboard/mycourses').get(mycourses);
 
 // professor dashboard routes
-// router.route('/dashboard').get(professor_dashboard);
-router.route('/dashboard/mycourses').get(professor_mycourses);
-router.route('/dashboard/mycourses/:CourseId').get(listenrolled_students);
+router.route('/profdashboard').get(professor_dashboard);
+router.route('/profdashboard/mycourses').get(professor_mycourses);
+router.route('/profdashboard/mycourses/:CourseId').get(listenrolled_students);
 
 router.route('/lab_assignment').get(lab_assignment);
 router.route('/course_registration').get(getCourseRegistrationList);
@@ -53,8 +53,9 @@ router.route('/course_registration').post(registerStudentPreferences);
 router.route('/dashboard/mycourses/:CourseId/lab/:Lab_ID/submission').post(lab_submission);
 
 router.route('/dashboard/mycourses/:CourseId/lab').get(listlabs);   // listing lab to both roles
+router.route('/profdashboard/mycourses/:CourseId/lab').get(listlabs);   // listing lab to both roles
 
-router.route('/dashboard/mycourses/:CourseId/lab/assignment').post(lab_assignment);
-router.route('/dashboard/mycourses/:CourseId/lab/:Lab_ID').get(listsubmissions);
+router.route('/profdashboard/mycourses/:CourseId/lab/assignment').post(lab_assignment);
+router.route('/profdashboard/mycourses/:CourseId/lab/:Lab_ID').get(listsubmissions);
 
 module.exports=router;  
