@@ -36,6 +36,9 @@ import useAPI from "../../hooks/api";
 import axios from "axios";
 import LabSubmission from "./LabSubmission";
 import AnnouncementDetails from "./AnnouncementDetails";
+import ClassNotes from "./ClassNotes";
+
+
 const TabPanel = (props) => {
 	const { children, value, index, ...other } = props;
 	return (
@@ -98,8 +101,32 @@ const CourseDetails = () => {
 		}
 	};
 
+	let Api2 = null;
+	if (role === "student") {
+		Api2 = `${ENDPOINT}/api/user/dashboard/Mycourses/${cid}/notes`; // Use course_id
+	} else if (role === "faculty") {
+		Api2 = `${ENDPOINT}/api/user/profdashboard/Mycourses/${cid}/notes`; // Use course_id
+	}
+
+	// const { GET, POST } = useAPI();
+
+	const [notes, setNotes] = useState("");
+
+	const fetchApiData2= async () => {
+		try {
+			const response = await axios.get(Api2); // Corrected typo here
+			console.log(response.data); // Ensure this line is uncommented to print data
+			setNotes(response.data.notes);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+
+
 	useEffect(() => {
 		fetchApiData(); // Ensure fetchApiData is called inside useEffect
+		fetchApiData2();
 	}, []);
 
 	const [value, setValue] = useState(0);
@@ -242,7 +269,9 @@ const CourseDetails = () => {
 								</Typography>
 							</TabPanel>
 							<TabPanel value={value} index={1}>
-								<Typography>Lecture Notes Content</Typography>
+								<Typography>
+								<ClassNotes notes={notes} />
+								</Typography>
 							</TabPanel>
 							<TabPanel value={value} index={2}>
 								<Typography>Announcements Content</Typography>

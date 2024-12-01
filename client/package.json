@@ -2,8 +2,11 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "scripts" : {
-    "test" : "jest"
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --coverage",
+    "eject": "react-scripts eject"
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",
@@ -44,12 +47,6 @@
     "toastify": "^2.0.1",
     "web-vitals": "^2.1.4"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -63,8 +60,12 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": "^7.26.0",
+    "@babel/preset-env": "^7.26.0",
+    "@babel/preset-react": "^7.25.9",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.0.1",
+    "babel-jest": "^29.7.0",
     "globals": "^15.12.0",
     "jest": "^27.5.1"
   }
