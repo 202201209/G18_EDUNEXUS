@@ -103,9 +103,6 @@ LEFT JOIN Attended_Lab al ON l.Lab_ID = al.Lab_ID AND ce.SID = al.SID
 WHERE c.year = $1 AND c.semester = $2 AND ce.sid = $3 AND al.Submission IS NULL 
 AND l.Due_Time > NOW() AND l.Due_Time < NOW() + INTERVAL '1 day'`,[current_year,semester_period,Studentid]);
 
-            // console.log(notices);
-            
-
             if (notices.rows.length === 0) {
                 return [{ message: "No notices found for student" }];
             }
@@ -145,4 +142,4 @@ const time_table = (req,res)=>{
     });
 }
   
-module.exports = {dashboard};
+module.exports = {dashboard,get_attendance,upcoming_events,notice_board,time_table};

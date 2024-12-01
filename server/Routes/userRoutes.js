@@ -19,10 +19,12 @@ router.route('/login').post(authUser);
 router.route('/authRole').post(protect,authRole);
 router.route('/viewprofile').get(viewProfile);
 router.route('/editprofile').post(editProfile);
-router.route('/dashboard/mycourses/notes').get(courseNotes);
+// router.route('/dashboard/mycourses/notes').get(courseNotes);
 router.route('/viewprofile').get(viewProfile);
 router.route('/editprofile').post(editProfile);
+
 router.route('/dashboard/mycourses/:CID/notes').get(courseNotes);
+router.route('/profdashboard/mycourses/:CID/notes').get(courseNotes);
 
 router.route('/scholarship/applications').get(getApplications);
 router.route('/scholarship/applications').post(createApplication);
@@ -59,3 +61,4 @@ router.route('/profdashboard/mycourses/:CourseId/lab/assignment').post(lab_assig
 router.route('/profdashboard/mycourses/:CourseId/lab/:Lab_ID').get(listsubmissions);
 
 module.exports=router;  
+ 

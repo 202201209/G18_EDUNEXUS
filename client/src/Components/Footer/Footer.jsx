@@ -1,7 +1,7 @@
 import React from "react";
 
 import { MdAnnouncement } from "react-icons/md";
-import SocielCard from "./SocielCard";
+import SocialCard from "./SocialCard";
 
 const Footer = () => {
 	const footerStyle = {
@@ -91,7 +91,7 @@ const Footer = () => {
 
 				<div style={{ paddingRight: "100px" }}>
 					<div>
-						<SocielCard />
+						<SocialCard />
 						{/* <SocialCard2 /> */}
 					</div>
 				</div>

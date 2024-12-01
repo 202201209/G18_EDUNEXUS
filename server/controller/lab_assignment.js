@@ -39,7 +39,7 @@ const lab_assignment = async (req, res) => {
 				Lab_ID: Lab_ID,
 			});
 		} catch (error) {
-			await pool.query("ROLLBACK");
+			// await pool.query("ROLLBACK");
 			if (error.code === "23503" || error.code === "23505") {
 				res.status(400).json({ error: "Error due to wrong input!!" });
 			} else {
@@ -74,7 +74,7 @@ const lab_submission = async (req, res) => {
 				message: "Lab submitted successfully",
 			});
 		} catch (error) {
-			await pool.query("ROLLBACK");
+			// await pool.query("ROLLBACK");
 			if (error.code === "23503" || error.code === "23505") {
 				res.status(400).json({ error: "Error due to wrong input!!" });
 			} else {
@@ -108,9 +108,6 @@ const listlabs = async (req, res) => {
 
 const listsubmissions = async(req,res)=>{
    
-  const ID = req.body.ID;
-  if(ID[0] == 'P')
-    {
       const CID = req.params.CourseId;
       const Lab_ID = req.params.Lab_ID;
     
@@ -130,6 +127,5 @@ const listsubmissions = async(req,res)=>{
         console.error("Error : fetching labs from database",error);
         res.status(500).json({Error : "An error occured while fetching data for submitted lab"});
       }
-    }
 }
 module.exports = { lab_assignment , lab_submission, listlabs, listsubmissions}; 

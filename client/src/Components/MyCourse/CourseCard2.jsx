@@ -5,7 +5,7 @@ import ContactsIcon from "@mui/icons-material/Contacts";
 import PeopleIcon from "@mui/icons-material/People";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
-const CourseCard2 = ({ courseName, instructor, avatarLetter, courseCode }) => {
+const CourseCard2 = ({ cid,courseName, instructor, avatarLetter, courseCode }) => {
 	const navigate = useNavigate();
 	return (
 		<div style={{ paddingTop: "15px", paddingBottom: "0px" }}>
@@ -13,7 +13,7 @@ const CourseCard2 = ({ courseName, instructor, avatarLetter, courseCode }) => {
 				<div
 					className="main"
 					onClick={() => {
-						navigate(`/Mycourses/:courseId`);
+						navigate(`/Mycourses/${cid}`);
 					}}
 					style={{ cursor: "pointer" }}
 				>

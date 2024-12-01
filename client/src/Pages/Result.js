@@ -3,28 +3,28 @@ import '../CSS/Result.css';
 
 const Result = () => {
     const [studentDetails] = useState({
-        name: '',
-        studentId: '',
-        program: '',
-        semester: '',
+        name: 'Neha Singh',
+        studentId: 'S002',
+        program: 'B.Tech',
+        semester: '4',
     });
 
     const [gradeDetails] = useState([
-        { courseTitle: 'Course 1', courseCode: '', creditHours: '', grade: '', gradePoints: '' },
-        { courseTitle: 'Course 2', courseCode: '', creditHours: '', grade: '', gradePoints: '' },
-        { courseTitle: 'Course 3', courseCode: '', creditHours: '', grade: '', gradePoints: '' },
-        { courseTitle: 'Course 4', courseCode: '', creditHours: '', grade: '', gradePoints: '' },
-        { courseTitle: 'Course 5', courseCode: '', creditHours: '', grade: '', gradePoints: '' },
-        { courseTitle: 'Course 6', courseCode: '', creditHours: '', grade: '', gradePoints: '' },
+        { courseTitle: 'Course 1', courseCode: 'IT314', creditHours: '4', grade: 'AA', gradePoints: '40' },
+        { courseTitle: 'Course 2', courseCode: 'EL403', creditHours: '3', grade: 'BB', gradePoints: '30' },
+        { courseTitle: 'Course 3', courseCode: 'IT214', creditHours: '4', grade: 'AB', gradePoints: '40' },
+        { courseTitle: 'Course 4', courseCode: 'SC224', creditHours: '3', grade: 'BC', gradePoints: '30' },
+        { courseTitle: 'Course 5', courseCode: 'IT227', creditHours: '3', grade: 'BB', gradePoints: '30' },
+        { courseTitle: 'Course 6', courseCode: 'IE402', creditHours: '3.5', grade: 'BB', gradePoints: '35' },
     ]);
 
     const [performanceSummary] = useState({
-        creditsRegistered: '',
-        creditsEarned: '',
-        gradePointsEarned: '',
-        spi: '',
-        cumulativeCreditsRegistered: '',
-        cpi: '',
+        creditsRegistered: '20.5',
+        creditsEarned: '20.5',
+        gradePointsEarned: '180',
+        spi: '8.24',
+        cumulativeCreditsRegistered: '40',
+        cpi: '8.01',
     });
 
     return (
