@@ -4,8 +4,13 @@
     background-color: white;
     padding: 20px;
     border-radius: 8px;
+    border: 1px solid #1d4164;
     color: #19425e;
-    box-shadow:  5px 5px 5px #2e556e;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#container:hover {
+    transform: scale(1.02);
 }
 
 #header {

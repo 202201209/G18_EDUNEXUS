@@ -4,8 +4,6 @@ const pool = require("../config/db");
 const mycourses = async (req,res)=>{
     const StudentID = req.query.ID;
     // console.log(req.query);
-    
-    if(StudentID[0] === 'S'){  
     const Semester = req.query.Semester;
 
     try {
@@ -48,8 +46,7 @@ const mycourses = async (req,res)=>{
         Error: "Internal Server Error, An error occurred while fetching data from the database.",
     });
     } 
-}
-   
+
 }
 
 module.exports = {mycourses}
