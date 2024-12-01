@@ -12,4 +12,4 @@ function Loding() {
   )
 }
 
-export default Loding;
+export default Loding;
