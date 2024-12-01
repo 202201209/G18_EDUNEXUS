@@ -2,7 +2,8 @@ import React from "react";
 
 import { MdAnnouncement } from "react-icons/md";
 import SocialCard from "./SocialCard";
-
+import GitHubIcon from "@mui/icons-material/GitHub";
+import { IconButton } from "@mui/material";
 const Footer = () => {
 	const footerStyle = {
 		backgroundColor: "#282c34",
@@ -77,21 +78,31 @@ const Footer = () => {
 							</a>
 						</li>
 						<li>
-							<a href="/course" style={linkStyle}>
-								Course
+							<a href="/Mycourses" style={linkStyle}>
+								My Courses
 							</a>
 						</li>
 						<li>
-							<a href="/help" style={linkStyle}>
-								Help Center
-							</a>
+							<a href="/FeesPayment" style={linkStyle}>
+							FeesPayment</a>
 						</li>
 					</ul>
 				</div>
 
-				<div style={{ paddingRight: "100px" }}>
+				<div style={{ paddingRight: "10px" }}>
 					<div>
-						<SocialCard />
+						<IconButton
+							onClick={() =>
+								window.open(
+									"https://github.com/202201209/G18_EDUNEXUS",
+									"_blank"
+								)
+							}
+							style={{ color: "white", size: "20rem" }}
+						>
+							<GitHubIcon />
+						</IconButton>
+						{/* <SocialCard /> */}
 						{/* <SocialCard2 /> */}
 					</div>
 				</div>

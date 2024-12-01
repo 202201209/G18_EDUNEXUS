@@ -13,14 +13,24 @@ const UpcomingFeatures = () => {
 				"Access the platform on-the-go with seamless mobile app support.",
 		},
 		{
-			title: "Gamified Learning",
+			title: "E-Library with Integrated Search",
 			description:
-				"Introduce fun, interactive challenges to enhance student engagement.",
+				"Adds a digital library that includes books, research papers, and reference materials with advanced search and filtering capabilities.",
 		},
 		{
-			title: "Multi-Language Support",
+			title: "Internship and Career Guidance Portal",
 			description:
-				"Enable the platform in multiple languages for broader accessibility.",
+				"Helps students find internships, job opportunities, and career counseling resources based on their academic progress and interests.",
+		},
+		{
+			title: "Integrated Online Examination System",
+			description:
+				"Develops a secure and scalable module for conducting online exams with automated proctoring and instant result generation.",
+		},
+		{
+			title: "Mobile Application Development",
+			description:
+				"Extends the platform to a mobile app with offline features like downloading notes or submitting assignments without internet access.",
 		},
 	];
 

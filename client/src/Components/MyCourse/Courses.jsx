@@ -6,10 +6,11 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import useAPI from "../../hooks/api";
+import Loader from "../../Pages/Loding"; // Import the Loader component
 //integration
 import axios from "axios";
 
-// update this url
+
 //  import dotenv from 'dotenv';
 //  dotenv.config();
 
@@ -28,24 +29,24 @@ if (role === "student") {
 }
 
 const parentstyle = {
-	marginTop: "100px",
-	display: "flex",
-	alignItems: "center",
-	justifyContent: "center",
-	padding: "5px",
-	margin: "5px",
+    marginTop: "100px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "5px",
+    margin: "5px",
 };
 const Courses = () => {
-	// List of courses (already present in your original code)
+    // List of courses (already present in your original code)
+    const [isLoading, setIsLoading] = useState(true);
+    const [mycourses, setMycourses] = useState([]);
+    const [semester, setSemester] = React.useState("4");
 
-	const [mycourses, setMycourses] = useState([]);
-	const [semester, setSemester] = React.useState("4");
+    const { GET, POST } = useAPI();
 
-	const { GET, POST } = useAPI();
-
-	const handleChange = (event) => {
-		setSemester(event.target.value);
-	};
+    const handleChange = (event) => {
+        setSemester(event.target.value);
+    };
 
 	useEffect(() => {
 		const fetchApiData = async () => {
@@ -69,9 +70,9 @@ const Courses = () => {
 				// console.log(results.data.mycourses);
 				setMycourses(response.data.mycourses);
 
-				// const results = await axios.get(
-				// 	`http://localhost:3001/api/user/dashboard/mycourses?ID=${S001}&Semester=${5}`
-				// );
+                // const results = await axios.get(
+                // 	`http://localhost:3001/api/user/dashboard/mycourses?ID=${S001}&Semester=${5}`
+                // );
 
 				setMycourses(response.data?.mycourses);
 			} catch (error) {
@@ -98,51 +99,51 @@ const Courses = () => {
 			>
 				<h1 style={{ zIndex: "1", width: "100%", margin: 0 }}>My Courses</h1>
 
-				<FormControl
-					sx={{
-						// marginTop: "200px",
-						m: 1,
-						minWidth: 120,
-						borderRadius: "8px",
-						backgroundColor: "#f5f5f5",
-						boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-						"& .MuiSelect-root": {
-							padding: "10px",
-							border: "1px solid #ccc",
-							"&:hover": {
-								borderColor: "#3f51b5",
-							},
-						},
-						"& .Mui-focused .MuiOutlinedInput-notchedOutline": {
-							borderColor: "#3f51b5",
-						},
-					}}
-					size="medium"
-				>
-					<InputLabel id="demo-select-small-label">Semester</InputLabel>
-					<Select
-						labelId="demo-select-small-label"
-						id="demo-select-small"
-						value={semester}
-						label="Semester"
-						onChange={handleChange}
-						sx={{
-							"& .MuiSelect-icon": {
-								color: "#3f51b5",
-							},
-						}}
-					>
-						{[1, 2, 3, 4, 5, 6, 7, 8].map((sem) => (
-							<MenuItem key={sem} value={sem}>
-								{sem}
-							</MenuItem>
-						))}
-					</Select>
-				</FormControl>
-			</div>
-			<div style={{ marginTop: "40px" }}>
-				<Grid container>
-					{/* Sidebar with Navbar */}
+                <FormControl
+                    sx={{
+                        // marginTop: "200px",
+                        m: 1,
+                        minWidth: 120,
+                        borderRadius: "8px",
+                        backgroundColor: "#f5f5f5",
+                        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+                        "& .MuiSelect-root": {
+                            padding: "10px",
+                            border: "1px solid #ccc",
+                            "&:hover": {
+                                borderColor: "#3f51b5",
+                            },
+                        },
+                        "& .Mui-focused .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "#3f51b5",
+                        },
+                    }}
+                    size="medium"
+                >
+                    <InputLabel id="demo-select-small-label">Semester</InputLabel>
+                    <Select
+                        labelId="demo-select-small-label"
+                        id="demo-select-small"
+                        value={semester}
+                        label="Semester"
+                        onChange={handleChange}
+                        sx={{
+                            "& .MuiSelect-icon": {
+                                color: "#3f51b5",
+                            },
+                        }}
+                    >
+                        {[1, 2, 3, 4, 5, 6, 7, 8].map((sem) => (
+                            <MenuItem key={sem} value={sem}>
+                                {sem}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+            </div>
+            <div style={{ marginTop: "40px" }}>
+                <Grid container>
+                    {/* Sidebar with Navbar */}
 
 					{/* Course Cards Section */}
 					<Grid

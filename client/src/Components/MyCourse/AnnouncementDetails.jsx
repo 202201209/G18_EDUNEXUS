@@ -9,7 +9,9 @@ import AnnouncementItem from './AnnouncementItem';
 //   { facultyName: "Dr. Smith", title: "Guest Lecture", content: "Guest lecture by Prof. Anderson on Quantum Physics.", date: "2024-11-20", category: "Lecture" },
 // ];
 
-const AnnouncementDetails = ({category,Lists}) => {
+const AnnouncementDetails = ({ category, Lists }) => {
+	console.log("categaaaory");
+	console.log(Lists);
   return (
 		<Container maxWidth="md" sx={{ pt: 4, color: "#003366" }}>
 			{/* Page Header */}
@@ -28,7 +30,8 @@ const AnnouncementDetails = ({category,Lists}) => {
 			{Lists && Array.isArray(Lists)
 				? Lists.map((List, index) => (
 						<Box key={index} mb={3}>
-							<AnnouncementItem
+						<AnnouncementItem
+								LabId={List.lab_id}
 								title={List.title}
 								date={List.due_time}
 								facultyName={List.prof_id}

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Box, Grid, Paper } from '@mui/material';
-import Movable from './Movable';
 import TimeTable from './TimeTable';
 import Events from './Events';
 import '../../CSS/DashCards.css';
@@ -13,7 +12,9 @@ import axios from 'axios';
 
 
 function ProfCards() {
-  const Api = `${ENDPOINT}/api/user/dashboard?ID=P001`;
+  const SID = JSON.parse(localStorage.getItem("userInfo")).SID;
+
+  const Api = `${ENDPOINT}/api/user/dashboard?ID=${SID}`;
   const [event, setevent] = useState("");
   const [TableData, setTableData] = useState([]);
   const [error, setError] = useState(null);
@@ -25,8 +26,8 @@ function ProfCards() {
       setevent(response.data?.upcoming_events_data);
       setTableData(response.data?.time_table_data);
     }
-    catch (error) {
-      setError(error);
+    catch (e) {
+      setError(e);
       console.log(error);
     }
 

@@ -90,7 +90,7 @@ const ScholarshipDetails = () => {
     if (validateFields()) {
       try {
         await axios.post(
-          'http://localhost:3001/api/user/scholarship/applications',
+          `${ENDPOINT}/api/user/scholarship/applications`,
           newApplication
         );
         alert('Application submitted successfully!');

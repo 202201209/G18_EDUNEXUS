@@ -30,7 +30,6 @@ const approveCourseAllotment = async (req, res) => {
         }
     }
     
-
     const client = await pool.connect();
     try {
         const insertCourse1 = 'INSERT INTO course_enrolled (sid, course_id) VALUES ($1, $2)';
@@ -38,12 +37,12 @@ const approveCourseAllotment = async (req, res) => {
         await client.query(insertCourse1, [sid, courses[0]]);
         await client.query(insertCourse2, [sid, courses[1]]);
 
-        const deletePreferences = 'DELETE FROM student_preference WHERE sid = $1';
-        await client.query(deletePreferences, [sid]);
+        // const deletePreferences = 'DELETE FROM student_preference WHERE sid = $1';
+        // await client.query(deletePreferences, [sid]);
         allocationBatch = null;
         res.status(200).json({ message: "Courses approved and preferences deleted" });
     } catch (error) {
-        await client.query('ROLLBACK');
+        // await client.query('ROLLBACK');
         res.status(500).json({ message: error.message });
     } finally {
         client.release();

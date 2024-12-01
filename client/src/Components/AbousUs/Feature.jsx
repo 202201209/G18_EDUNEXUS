@@ -3,23 +3,47 @@ import React from "react";
 const Features = () => {
 	const featureData = [
 		{
-			title: "Exam Scheduling",
+			title: "Secure User Authentication and Account Management",
 			description:
-				"Schedule exams in advance with automated reminders for students.",
+				"Implements robust user authentication mechanisms with session handling, allowing users to securely log in, manage their accounts, and update profile or password details.",
 		},
 		{
-			title: "Real-Time Results",
-			description: "Get your scores as soon as your exam finishes.",
+			title: "Comprehensive Course Enrollment and Tracking",
+			description:
+				"Facilitates efficient course registration with automated validation of prerequisites, seat availability checks, and comprehensive course tracking.",
 		},
 		{
-			title: "Multiple Question Types",
-			description: "Supports multiple-choice, true/false, and more.",
+			title: "Integrated Financial Transaction System",
+			description:
+				"Provides a seamless payment gateway for fee processing, ensuring secure and efficient financial transactions.",
 		},
 		{
-			title: "User-Friendly Interface",
-			description: "Easily navigate through your exams with our intuitive UI.",
+			title: "Scholarship Management and Application Tracking",
+			description:
+				"Offers a dedicated portal for students to submit scholarship applications, view eligibility criteria, and monitor application status in real-time.",
+		},
+		{
+			title: "Attendance Monitoring and Analytics",
+			description:
+				"Enables students to access detailed attendance records and analytics for academic performance tracking.",
+		},
+		{
+			title: "Centralized Academic Resource Repository",
+			description:
+				"Establishes a centralized platform where students can access, view, and download course materials and academic resources uploaded by instructors.",
+		},
+		{
+			title: "Digital Assignment Submission Platform",
+			description:
+				"Features a streamlined file submission system for assignments, providing submission status tracking and confirmation.",
+		},
+		{
+			title: "Performance Evaluation and Reporting Module",
+			description:
+				"Offers tools for students to access test schedules and results while empowering administrators to generate detailed reports and manage course assignments effectively.",
 		},
 	];
+
 
 	const styles = {
 		container: {

@@ -5,7 +5,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import PropTypes from "prop-types";
 import LabSubmission from "./LabSubmission";
-const AnnouncementItem = ({ title, date, facultyName, content, category }) => {
+const AnnouncementItem = ({ LabId,title, date, facultyName, content, category }) => {
   // State for Modal (hook should be called unconditionally)
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -15,7 +15,7 @@ const AnnouncementItem = ({ title, date, facultyName, content, category }) => {
   // Handlers for opening and closing modal
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
-
+	console.log("LabId",LabId);
   return (
 		<>
 			{/* Main Announcement Card */}
@@ -88,10 +88,9 @@ const AnnouncementItem = ({ title, date, facultyName, content, category }) => {
 							overflowY: "auto", // Adds scroll if content overflows vertically
 						}}
 					>
-
 						{category === "Lab" ? (
 							<LabSubmission
-								// labId={labId}
+								LabId={LabId}
 								labTitle={title}
 								labDescription={content}
 								labDueDate={date}

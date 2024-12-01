@@ -1,32 +1,23 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-// import ReCAPTCHA from "react-google-recaptcha";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import StudentLogin from "../Images/student_login.png";
 import FacultyLogin from "../Images/faculty.png";
-import AdminLogin from "../Images/admin.png"
+import AdminLogin from "../Images/admin.png";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import CarouselBack from "../Components/Login/Carousel";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-// import { useContextState } from "../context/context";
-import { toast } from "react-toastify"; // Import toast 
-import { Today } from "@mui/icons-material";
-import config from "../config";
+import { toast } from "react-toastify"; // Import toast
+import Loader from "./Loding"; // Import Loader component
+import Background from "../Images/add.png"; // Import the background image
 
-
-
-
-
-
-const ENDPOINT = process.env.REACT_APP_BACKEND_URL||'http://localhost:3001';
-console.log(ENDPOINT);
+const ENDPOINT = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
 const defaultTheme = createTheme();
 const UserRole = {
   STUDENT: "student",
@@ -40,7 +31,8 @@ export default function Login() {
   const [userid, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [currentUser, setCurrentUser] = useState(UserRole.STUDENT);
-  
+  const [isLoading, setIsLoading] = useState(false); // Loading state
+
   useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     if (!userInfo || !userInfo.token) {
@@ -65,7 +57,6 @@ export default function Login() {
           }
         }
       );
-      // console.log(response.data);
       if (response.data.success) {
         toast.success("Login Successful", response.data);
         localStorage.setItem("userInfo", JSON.stringify(response.data));
@@ -78,16 +69,16 @@ export default function Login() {
         }
       }
     } catch (error) {
-      toast.error( error.response.data);
+      toast.error(error.response.data);
       navigate('/'); // Redirect to login on error
     }
   };
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Current User Role:", currentUser);
     localStorage.removeItem("userinfo");
+    setIsLoading(true); // Set loading state to true
     try {
       // Send login request to the server
       const response = await axios.post(`${ENDPOINT}/api/user/login`, {
@@ -95,15 +86,15 @@ export default function Login() {
         password: password,
         role: currentUser,
       });
-  
+
       // Check if login was successful
       if (response.data.success) {
         // Store user info in local storage
         localStorage.setItem("userInfo", JSON.stringify(response.data));
-  
+
         // Display success toast
         toast.success("Login Successful");
-  
+
         // Navigate to the appropriate dashboard
         if (currentUser === UserRole.STUDENT) {
           navigate("/dashboard");
@@ -116,17 +107,15 @@ export default function Login() {
     } catch (error) {
       // Display error toast if login fails
       toast.error(error.response?.data?.message || "Login Failed");
+    } finally {
+      setIsLoading(false); // Set loading state to false
     }
   };
-  
 
   const handleLogout = () => {
     localStorage.removeItem("userinfo");
-    // localStorage.removeItem("_grecaptcha");
-
     navigate('/');
-
-  }
+  };
 
   const handleStudentLogin = () => {
     setCurrentUser(UserRole.STUDENT);
@@ -135,161 +124,200 @@ export default function Login() {
   const handleFacultyLogin = () => {
     setCurrentUser(UserRole.FACULTY);
   };
+
   const handleAdminLogin = () => {
     setCurrentUser(UserRole.ADMIN);
-  }
+  };
 
   // Define a border style for the selected avatar
   const avatarStyle = (role) => ({
     boxShadow: currentUser === role ? "5px 3px 10px black" : "none",
     cursor: "pointer",
   });
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
+
   const handlePassword = (event) => {
     const inputPassword = event.target.value; // Extract the input value
     setPassword(inputPassword); // Update state
-
-    // if (passwordRegex.test(inputPassword)) {
-    //   toast.success('Password is valid'); // Show success toast
-    //   return true;
-    // } else {
-    //   toast.error("Password is invalid"); // Show error toast
-    //   return false;
-    // }
   };
 
-
   return (
-    <div className="my-glass-effect" >
-      {/* <CarouselBack /> */}
-      <ThemeProvider theme={defaultTheme}>
-        <Container
-          component="main"
-          maxWidth="sm"
-          sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}
+    <div
+      style={{
+        display: "flex",
+        height: "100vh",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          width: "80%",
+          height: "80%",
+          // boxShadow: "0px 0px 8px black",
+          borderRadius: "2em",
+          overflow: "hidden",
+        }}
+      >
+        <div
+          style={{
+            flex: 0.5, // 50% of the width
+            position: "relative",
+          }}
         >
-          <CssBaseline />
-          <Box
+          <div
             style={{
-              // backgroundColor: "#f5f7f7",
-              boxShadow: "0px 0px 8px  black",
-
-              background: "transparent",
-
+              backgroundColor: "rgba(255, 255, 255, 0.8)",
+              height: "100%",
+              width: "100%",
+              position: "absolute",
+              top: 0,
+              left: 0,
+              zIndex: 1,
             }}
-            sx={{
-              marginTop: 12,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              backgroundColor: "rgba(255, 255, 255, 0.4)",
-              borderRadius: "2em",
-              padding: "3em",
-              height: "auto",
+          ></div>
+          <div
+            style={{
+              backgroundImage: `url(${Background})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+              height: "100%",
+              width: "100%",
+              position: "absolute",
+              top: 0,
+              left: 0,
+              zIndex: 2,
             }}
-          >
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
+          ></div>
+        </div>
+        <div
+          style={{
+            flex: 0.5, // 50% of the width
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "rgba(255, 255, 255, 0.8)",
+          }}
+        >
+          <ThemeProvider theme={defaultTheme}>
+            <Container
+              component="main"
+              maxWidth="sm"
+              sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}
             >
-              <Avatar
-                sx={{ mr: 4, width: 56, height: 56 }}
-                style={{ backgroundColor: "#25396F", ...avatarStyle(UserRole.STUDENT) }} // Apply border style
-                src={StudentLogin}
-                onClick={handleStudentLogin}
-              />
-              <Avatar
-                sx={{ mr: 4, ml: 4, width: 56, height: 56 }}
-                style={{ backgroundColor: "#25396F", ...avatarStyle(UserRole.FACULTY) }} // Apply border style
-                src={FacultyLogin}
-                onClick={handleFacultyLogin}
-              />
-              <Avatar
-                sx={{ ml: 4, width: 56, height: 56 }}
-                style={{ backgroundColor: "#25396F", ...avatarStyle(UserRole.ADMIN) }} // Apply border style
-                src={AdminLogin}
-                onClick={handleAdminLogin}
-              />
-            </Box>
-
-            <Typography
-              component="h1"
-              variant="h5"
-              sx={{ fontFamily: "Quicksand", fontWeight: "bold", m: 3 }}
-            >
-              Login in As {currentUser}
-            </Typography>
-            <Box
-              component="form"
-              onSubmit={handleSubmit}
-              noValidate
-              sx={{ mt: 1, width: "100%" }}
-            >
-              <TextField
-                id="filled-basic"
-                variant="standard"
-                margin="normal"
-                required
-                fullWidth
-                label="User Id "
-                name="userid"
-                autoFocus
-                value={userid}
-                onChange={(e) => {
-                  setUserId(e.target.value);
-                }}
-                InputProps={{
-                  style: {
-                    fontFamily: "Quicksand",
-                    fontWeight: "bold",
-                    color: "#25396F",
-                    // backgroundColor: "white",
-                  },
-                }}
-                autoComplete="off"
-              />
-              <TextField
-                id="filled-basic"
-                variant="standard"
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                onChange={handlePassword} 
-                value={password}
-                autoComplete="off"
-              />
-
-              {/* <ReCAPTCHA
-                sitekey={config.REACT_APP_RECAPTCHA_SITE_KEY}
-                onChange={(val) => setcapVal(val)}
-              /> */}
-              <Button
-                type="submit"
-                fullWidth
-                // disabled={!capVal}
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
+              <CssBaseline />
+              <Box
                 style={{
-                  fontFamily: "Quicksand",
-                  fontWeight: "bold",
-                  backgroundColor: "#25396F",
-
+                  // boxShadow: "0px 0px 8px black",
+                  // background: "transparent",
                 }}
-
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  // backgroundColor: "rgba(255, 255, 255, 0.6)",
+                  borderRadius: "2em",
+                  padding: "3em",
+                  height: "auto",
+                }}
               >
-                Submit
-              </Button>
-            </Box>
-          </Box>
-        </Container>
-      </ThemeProvider>
+                {isLoading && <Loader />} {/* Display Loader when loading */}
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Avatar
+                    sx={{ mr: 4, width: 56, height: 56 }}
+                    style={{ backgroundColor: "#25396F", ...avatarStyle(UserRole.STUDENT) }} // Apply border style
+                    src={StudentLogin}
+                    onClick={handleStudentLogin}
+                  />
+                  <Avatar
+                    sx={{ mr: 4, ml: 4, width: 56, height: 56 }}
+                    style={{ backgroundColor: "#25396F", ...avatarStyle(UserRole.FACULTY) }} // Apply border style
+                    src={FacultyLogin}
+                    onClick={handleFacultyLogin}
+                  />
+                  <Avatar
+                    sx={{ ml: 4, width: 56, height: 56 }}
+                    style={{ backgroundColor: "#25396F", ...avatarStyle(UserRole.ADMIN) }} // Apply border style
+                    src={AdminLogin}
+                    onClick={handleAdminLogin}
+                  />
+                </Box>
+
+                <Typography
+                  component="h1"
+                  variant="h5"
+                  sx={{ fontFamily: "Quicksand", fontWeight: "bold", m: 3 }}
+                >
+                  Login in As {currentUser}
+                </Typography>
+                <Box
+                  component="form"
+                  onSubmit={handleSubmit}
+                  noValidate
+                  sx={{ mt: 1, width: "100%" }}
+                >
+                  <TextField
+                    id="filled-basic"
+                    variant="standard"
+                    margin="normal"
+                    required
+                    fullWidth
+                    label="User Id "
+                    name="userid"
+                    autoFocus
+                    value={userid}
+                    onChange={(e) => {
+                      setUserId(e.target.value);
+                    }}
+                    InputProps={{
+                      style: {
+                        fontFamily: "Quicksand",
+                        fontWeight: "bold",
+                        color: "#25396F",
+                      },
+                    }}
+                    autoComplete="off"
+                  />
+                  <TextField
+                    id="filled-basic"
+                    variant="standard"
+                    margin="normal"
+                    required
+                    fullWidth
+                    name="password"
+                    label="Password"
+                    type="password"
+                    onChange={handlePassword}
+                    value={password}
+                    autoComplete="off"
+                  />
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                    style={{
+                      fontFamily: "Quicksand",
+                      fontWeight: "bold",
+                      backgroundColor: "#25396F",
+                    }}
+                  >
+                    Submit
+                  </Button>
+                </Box>
+              </Box>
+            </Container>
+          </ThemeProvider>
+        </div>
+      </Box>
     </div>
   );
 }

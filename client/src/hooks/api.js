@@ -12,10 +12,13 @@ const useAPI = () => {
 	};
 
 	const POST = async (url, data = {}, params = {}, signal = null) => {
+		console.log("url", url);
 		try {
 			const response = await API.post(url, data, { params, signal });
+			console.log("response", response);
 			return response;
 		} catch (error) {
+			console.log("response", error);
 			return error;
 		}
 	};
