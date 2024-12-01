@@ -24,7 +24,7 @@ import LabSubmission from "./Components/MyCourse/LabSubmission";
 import CourseDetails from "./Components/MyCourse/CourseDetails";
 import FeePayments from './Components/FeesPayment/FeePayments';
 import NotFound from './Components/404NotFound';
-
+import AboutUs from './Components/AbousUs/AboutUs';
 function Layout() {
   const navigate = useNavigate();
   const role=JSON.parse(localStorage.getItem('userInfo')).role;
@@ -66,66 +66,101 @@ function Layout() {
 }
 
 const router = createBrowserRouter([
-  {
-  
-    path: '/',
-    element: <Login />,
-  },
-  {
-    element: <Layout />,
-    children: [
-      // {
-      //   path: '/',
-      //   element: <Dashboard />,
-      // },
-      {
-        path: '/dashboard',
-        element: <ProtectedRoute element={Dashboard} allowedRoles={['student']} />,
-      },
-      
-      {
-        path: '/ProfDashboard',
-        element:<ProtectedRoute element={ProfDashboard} allowedRoles={['faculty']} />,
-      },
-      
-	    {
-		    path: "/Mycourses",
-		    element: <ProtectedRoute element={Courses} allowedRoles={['faculty', 'student']} />
-      },
-      {
-        path: "/Mycourses/:courseId",
-		    element: <ProtectedRoute element={CourseDetails} allowedRoles={['faculty', 'student']} />
-      },
-      {
-        path:"/CourseRegistration",
-        element: <ProtectedRoute element={CourseRegistration} allowedRoles={['student']} />
-      },
-      {
-        path:'/FeesPayment',
-        element:<ProtectedRoute element={FeePayments} allowedRoles={['student']} />
-      },
-      {
-        path:'/scholarship',
-        element:<ProtectedRoute element={Scholarship} allowedRoles={['student']} />
-      },
-      {
-        path: '/Profile',
-        element: <ProtectedRoute element={Profile} allowedRoles={['faculty', 'admin' , 'student']} />
-      },
-      {
-        path: '/Result',
-        element:<ProtectedRoute element={Result} allowedRoles={['student']} />
-      },
-      {
-        path: '/adminDashboard',
-        element: <ProtectedRoute element={AdminDashboard} allowedRoles={['admin']} />,
-      },
-      {
-        path: '*',
-        element: <NotFound />,
-      }
-    ],
-  },
+	{
+		path: "/",
+		element: <Login />,
+	},
+	{
+		path: "/AboutUs",
+		element: (
+			<ProtectedRoute element={AboutUs} allowedRoles={["faculty", "student"]} />
+		),
+	},
+	{
+		element: <Layout />,
+		children: [
+			// {
+			//   path: '/',
+			//   element: <Dashboard />,
+			// },
+			{
+				path: "/dashboard",
+				element: (
+					<ProtectedRoute element={Dashboard} allowedRoles={["student"]} />
+				),
+			},
+
+			{
+				path: "/ProfDashboard",
+				element: (
+					<ProtectedRoute element={ProfDashboard} allowedRoles={["faculty"]} />
+				),
+			},
+
+			{
+				path: "/Mycourses",
+				element: (
+					<ProtectedRoute
+						element={Courses}
+						allowedRoles={["faculty", "student"]}
+					/>
+				),
+			},
+			{
+				path: "/Mycourses/:courseId",
+				element: (
+					<ProtectedRoute
+						element={CourseDetails}
+						allowedRoles={["faculty", "student"]}
+					/>
+				),
+			},
+			{
+				path: "/CourseRegistration",
+				element: (
+					<ProtectedRoute
+						element={CourseRegistration}
+						allowedRoles={["student"]}
+					/>
+				),
+			},
+			{
+				path: "/FeesPayment",
+				element: (
+					<ProtectedRoute element={FeePayments} allowedRoles={["student"]} />
+				),
+			},
+			{
+				path: "/scholarship",
+				element: (
+					<ProtectedRoute element={Scholarship} allowedRoles={["student"]} />
+				),
+			},
+			{
+				path: "/Profile",
+				element: (
+					<ProtectedRoute
+						element={Profile}
+						allowedRoles={["faculty", "admin", "student"]}
+					/>
+				),
+			},
+			{
+				path: "/Result",
+				element: <ProtectedRoute element={Result} allowedRoles={["student"]} />,
+			},
+			{
+				path: "/adminDashboard",
+				element: (
+					<ProtectedRoute element={AdminDashboard} allowedRoles={["admin"]} />
+				),
+			},
+			{
+				path: "*",
+				element: <NotFound />,
+			},
+		],
+	},
 ]);
 
 

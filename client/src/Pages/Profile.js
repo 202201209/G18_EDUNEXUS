@@ -9,12 +9,12 @@ import axios from 'axios';
 import { any } from 'prop-types';
 import { toast, ToastContainer } from "react-toastify";
 
-
+const ENDPOINT = process.env.REACT_APP_BACKEND_URL||'http://localhost:3001';
 
 
 const Profile = () => {
     const SID = JSON.parse(localStorage.getItem("userInfo")).SID;
-    const Api = `http://localhost:3001/api/user/viewprofile?SID=${SID}`;
+    const Api = `${ENDPOINT}/api/user/viewprofile?SID=${SID}`;
     const [error, setError] = useState(null);
     const [formData, setFormData] = useState({
         studentId: "",
@@ -94,7 +94,7 @@ const Profile = () => {
         console.log("Form data:", formData);
 
         try {
-            const response = await axios.post(`http://localhost:3001/api/user/editprofile`, {
+            const response = await axios.post(`${ENDPOINT}/api/user/editprofile`, {
                 studentId: formData.studentId,
                 Sname: formData.Studentname,
                 Fname: formData.fatherName,
