@@ -4,7 +4,7 @@
   "description": "SE Project",
   "main": "index.js",
   "scripts": {
-    "test": "mocha './specs/courseallotment.spec.js'",
+    "test": "mocha './specs//*.spec.js'",
     "start": "powershell -ExecutionPolicy Bypass -Command \"nodemon server.js\"",
     "coverage": "nyc --reporter=text --reporter=lcov npm test"
   },
