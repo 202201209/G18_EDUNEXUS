@@ -4,24 +4,16 @@ import logo from '../Images/profile_logo.png';
 import TextField from '@mui/material/TextField';
 // import MenuItem from '@mui/material/MenuItem';
 import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
-// import axios from 'axios';
 import { useEffect } from 'react';
+import axios from 'axios';
+import { any } from 'prop-types';
 import { toast, ToastContainer } from "react-toastify";
 
 
 const ENDPOINT = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
 const Profile = () => {
-    const userInfo = localStorage.getItem("userInfo");
-    if (!userInfo) {
-        toast.error("User not logged in!");
-        // Optionally, redirect to the login page
-        window.location.href = "/login"; // Or you can return null to render nothing
-        return null;
-    }
-
-    const parsedUserInfo = JSON.parse(userInfo);
-    const SID = parsedUserInfo.SID;
-    const Api = 'http://localhost:3001/api/user/viewprofile?SID=${SID}';
+    const SID = JSON.parse(localStorage.getItem("userInfo")).SID;
+    const Api = `http://localhost:3001/api/user/viewprofile?SID=${SID}`;
     const [error, setError] = useState(null);
     const [formData, setFormData] = useState({
         studentId: "",
@@ -100,7 +92,7 @@ const Profile = () => {
         console.log("Form data:", formData);
 
         try {
-            const response = await axios.post('http://localhost:3001/api/user/editprofile', {
+            const response = await axios.post(`http://localhost:3001/api/user/editprofile`, {
                 studentId: formData.studentId,
                 Sname: formData.Studentname,
                 Fname: formData.fatherName,
@@ -115,7 +107,7 @@ const Profile = () => {
             }
 
             );
-            console.log("Response data:", response.data);
+
             if (response.data.success) {
                 toast.success("Profile updated successfully!", response.data);
             }
@@ -186,21 +178,6 @@ const Profile = () => {
                     </div>
 
                     <div id="form-row">
-                        <div id="form-group">
-                        <TextField
-                            label="bdate"
-                            type="date"
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                            variant="standard" 
-                            name="bdate"
-                            value={formData.dob}
-                            fullWidth
-                            disabled
-                        />
-
-                        </div>
                         <div id="form-group">
                         <TextField
                             label="nationality"

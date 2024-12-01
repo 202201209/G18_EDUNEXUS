@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Box } from '@mui/material';
-import DashCards from '../Components/Dashboard/DashCards';
-import Loader from '../Pages/Loding'; // Import the Loader component
+import DashCards from '../Components/Dashboard/DashCards2';
 
 function Dashboard() {
     const [isLoading, setIsLoading] = useState(true);

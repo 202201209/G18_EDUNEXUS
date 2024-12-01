@@ -8,18 +8,13 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import TextField from '@mui/material/TextField';
-import IconButton from '@mui/material/IconButton';
-import EditIcon from '@mui/icons-material/Edit';
-import SaveAsIcon from '@mui/icons-material/SaveAs';
 
-function createData(time, monday, tuesday, wednesday, thursday, friday) {
+export function createData(time, monday, tuesday, wednesday, thursday, friday) {
   return { time, monday, tuesday, wednesday, thursday, friday };
 }
 
 export default function TimeTable({ TableData }) {
   const [rows, setRows] = useState([]);
-  const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -54,22 +49,12 @@ export default function TimeTable({ TableData }) {
     ));
   };
 
-
-
-  const handleChange = (index, column, value) => {
-    const updatedRows = [...rows];
-    updatedRows[index][column] = value;
-    setRows(updatedRows);
-  };
-
   if (isLoading) {
     return <p>Loading timetable...</p>;
   }
 
   return (
     <Box sx={{ position: 'relative', width: '100%' }}>
-      
-
       <TableContainer
         component={Paper}
         sx={{ width: '100%', maxHeight: '300px', overflowY: 'auto', borderRadius: '20px', scrollbarWidth: 'thin' }}
@@ -86,22 +71,14 @@ export default function TimeTable({ TableData }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row, index) => (
+            {rows.map((row) => (
               <TableRow key={row.time} sx={{ height: '55px' }}>
                 <TableCell component="th" scope="row">
                   {row.time}
                 </TableCell>
                 {['monday', 'tuesday', 'wednesday', 'thursday', 'friday'].map(day => (
                   <TableCell align="right" key={day}>
-                    {isEditing ? (
-                      <TextField
-                        value={row[day]}
-                        onChange={(e) => handleChange(index, day, e.target.value)}
-                        size="small"
-                      />
-                    ) : (
-                      row[day]
-                    )}
+                    {row[day]} 
                   </TableCell>
                 ))}
               </TableRow>
@@ -111,4 +88,5 @@ export default function TimeTable({ TableData }) {
       </TableContainer>
     </Box>
   );
+  
 }

@@ -4,8 +4,23 @@
   "description": "SE Project",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "powershell -ExecutionPolicy Bypass -Command \"nodemon server.js\""
+    "test": "mocha './specs//*.spec.js'",
+    "start": "powershell -ExecutionPolicy Bypass -Command \"nodemon server.js\"",
+    "coverage": "nyc --reporter=text --reporter=lcov npm test"
+  },
+  "nyc":{
+    "report-dir" : "./reports",
+    "include": [
+      "controller/**/*.js",
+      "model/**/*.js",
+      "routes/**/*.js",
+      "utils/**/*.js"
+    ],
+    "exclude": [
+      "**/*.spec.js",
+      "**/tests/**",
+      "node_modules/**"
+    ]
   },
   "author": "Group 18",
   "license": "ISC",
@@ -21,6 +36,15 @@
     "pdfkit": "^0.15.1",
     "pg": "^8.13.0",
     "socket.io": "^4.8.0",
+    "supertest": "^7.0.0",
     "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "chai": "^4.3.7",
+    "chai-as-promised": "^8.0.1",
+    "mocha": "^10.8.2",
+    "nock": "^13.5.6",
+    "nyc": "^17.1.0",
+    "sinon": "^19.0.2"
   }
 }
