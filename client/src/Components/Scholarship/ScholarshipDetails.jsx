@@ -51,26 +51,40 @@ const ScholarshipDetails = () => {
   const validateFields = () => {
     let valid = true;
     const newErrors = { full_name: '', email: '', phone: '' };
-
+  
+    // Full Name validation
+    const nameRegex = /^[A-Za-z\s]+$/; // Only alphabets and spaces allowed
     if (!newApplication.full_name.trim()) {
       newErrors.full_name = 'Full Name is required.';
       valid = false;
+    } else if (!nameRegex.test(newApplication.full_name)) {
+      newErrors.full_name = 'Full Name can only contain alphabets.';
+      valid = false;
+    } else if (newApplication.full_name.length < 5) {
+      newErrors.full_name = 'Full Name must be at least 5 characters.';
+      valid = false;
+    } else if (newApplication.full_name.length > 50) {
+      newErrors.full_name = 'Full Name must not exceed 50 characters.';
+      valid = false;
     }
-
+  
+    // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(newApplication.email)) {
       newErrors.email = 'Enter a valid email address.';
       valid = false;
     }
-
+  
+    // Phone validation
     if (!/^\d{10}$/.test(newApplication.phone)) {
       newErrors.phone = 'Phone number must be 10 digits.';
       valid = false;
     }
-
+  
     setErrors(newErrors);
     return valid;
   };
+  
 
   const handleSubmit = async () => {
     if (validateFields()) {
