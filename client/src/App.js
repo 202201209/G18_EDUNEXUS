@@ -107,7 +107,7 @@ const router = createBrowserRouter([
 				),
 			},
 			{
-				path: "/Mycourses/:courseId",
+				path: "/Mycourses/:course_id",
 				element: (
 					<ProtectedRoute
 						element={CourseDetails}

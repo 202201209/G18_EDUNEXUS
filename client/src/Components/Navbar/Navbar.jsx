@@ -215,7 +215,7 @@ export default function Navbar() {
 				<Divider />
 				{userInfo.role === "student" && (
 					<List>
-						{["FeesPayment", "CourseRegistration", "Settings", "AboutUs"].map(
+						{["FeesPayment", "CourseRegistration"].map(
 							(text, index) => (
 								<ListItem key={text} disablePadding sx={{ display: "block" }}>
 									<Link
@@ -255,8 +255,6 @@ export default function Navbar() {
 											>
 												{index === 0 && <PaymentIcon />}
 												{index === 1 && <CourseRegIcon />}
-												{index === 2 && <SettingsIcon />}
-												{index === 3 && <AboutUs />}
 											</ListItemIcon>
 											<ListItemText
 												primary={text}
@@ -284,6 +282,7 @@ export default function Navbar() {
 					alt="Student"
 					style={{ minHeight: "60px" }}
 				/>
+
 				<List sx={{ bottom: 0 }}>
 					<ListItem key={Logout} disablePadding>
 						<ListItemButton
