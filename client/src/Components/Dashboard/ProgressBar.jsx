@@ -9,7 +9,7 @@ function CircularProgressWithLabel({ attendance }) {
   const attendanceValue = parseFloat(attendance); // Convert attendance to a number
 
   return (
-    <Paper sx={{ width: '100%', borderRadius: '20px' }}>
+    <Paper sx={{ width: '100%', borderRadius: '20px' }} data-testid="paper-component">
       <Box sx={{ position: "relative", display: "block", marginLeft: '30%', justifyContent: 'center', alignItems: 'center', paddingTop: '10%' }}>
         <CircularProgress
           variant="determinate"

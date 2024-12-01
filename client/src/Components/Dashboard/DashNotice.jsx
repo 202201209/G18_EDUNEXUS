@@ -28,10 +28,10 @@ function getRandomColor() {
   return colorPalette[randomIndex];
 }
 
-function DashNotice({noticeTitle}) {
-  // useEffect(() => {
-  //   console.log('Notice data:', noticeTitle);
-  // }, [noticeTitle]);
+function DashNotice({notice}) {
+  useEffect(() => {
+    console.log('Notice data:', notice);
+  }, [notice]);
   return (  // Corrected: Added the return statement
     <>
       <h3 className='noticeHead'>Notice Board</h3>
@@ -43,13 +43,14 @@ function DashNotice({noticeTitle}) {
           scrollbarWidth: 'thin',
         }}
       >
-        {noticeTitle && noticeTitle.length > 0 ? (
-          noticeTitle.map(({lab_id, title, due_time}) => {
+        {notice && notice.length > 0 ? (
+          notice.map(({lab_id, title, due_time,description}) => {
             const randomColor = getRandomColor();
 
             return (
               <Paper
-                key={lab_id} // Use lab_id as a unique key
+                key={lab_id}
+                data-testid="notice"
                 sx={{
                   paddingLeft: '10px',
                   margin: '10px',
@@ -64,6 +65,7 @@ function DashNotice({noticeTitle}) {
               >
                 <Typography variant="h6">Due: {title}</Typography>
                 <Typography variant="body1">Left Time: {due_time}</Typography>
+                <Typography variant="body1">{description}</Typography>
               </Paper>
             );
           })

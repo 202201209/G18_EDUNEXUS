@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box } from '@mui/material';
-import DashCards from '../Components/Dashboard/DashCards';
+import DashCards from '../Components/Dashboard/DashCards2';
 
 function Dashboard() {
     return (

@@ -4,28 +4,28 @@ import '../../CSS/Events.css'
 import Box from '@mui/material/Box'
 import PropTypes from 'prop-types';
 
-const colorPalette = [
-  '#1976d2',  // Blue
-  '#ff4081',  // Pink
-  '#4caf50',  // Green
-  '#ff9800',  // Orange
-  '#9c27b0',  // Purple
-  '#f44336',  // Red
-  '#00bcd4',  // Cyan
-  '#1abc9c',  // Turquoise
-  '#2ecc71',  // Emerald
-  '#3498db',  // Peter River (Blue)
-  '#9b59b6',  // Amethyst (Purple)
-  '#e74c3c',  // Alizarin (Red)
-  '#f39c12',  // Orange
-  '#d35400',  // Pumpkin
-  '#7f8c8d',  // Asbestos (Gray)
-  '#e67e22',  // Carrot (Dark Orange)
-  '#34495e',  // Wet Asphalt (Dark Blue)
+export const colorPalette = [
+  '#1976d2',  
+  '#ff4081',  
+  '#4caf50',  
+  '#ff9800',  
+  '#9c27b0',  
+  '#f44336',  
+  '#00bcd4',  
+  '#1abc9c',  
+  '#2ecc71',  
+  '#3498db',  
+  '#9b59b6',  
+  '#e74c3c',  
+  '#f39c12',  
+  '#d35400',  
+  '#7f8c8d',  
+  '#e67e22',  
+  '#34495e',  
 ];
 
 // Function to get random color
-function getRandomColor() {
+export function getRandomColor() {
   const randomIndex = Math.floor(Math.random() * colorPalette.length);
   return colorPalette[randomIndex];
 }
@@ -41,8 +41,8 @@ function Events({height, event}) {
     {/* <h3>{props.event}</h3> */}
 
     <Box
-      sx={{
-        maxHeight:height,
+      style={{
+        maxHeight: height,
         overflowY: 'auto', 
         scrollbarWidth: 'thin',
       }}
@@ -54,16 +54,22 @@ function Events({height, event}) {
           return (
             <Paper
               key={data.id} 
-              sx={{
+              data-testid={`event-paper-${data.id}`}
+              style={{
                 paddingLeft: '10px', 
                 marginRight: '0px', 
                 margin: '10px', 
                 borderLeft: `5px solid ${randomColor}`,
-                borderTopLeftRadius:'20px' ,
-                '&:hover': {
-                  transform: 'scale(1.05)',
-                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)',
-                }
+                borderTopLeftRadius: '20px',
+                transition: 'transform 0.3s, box-shadow 0.3s',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'scale(1.05)';
+                e.currentTarget.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.2)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'scale(1)';
+                e.currentTarget.style.boxShadow = 'none';
               }}
             >
               <Typography variant="h6">{data.title}</Typography>

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Box, Grid, Paper } from '@mui/material';
-import Movable from './Movable';
 import TimeTable from './TimeTable';
 import Events from './Events';
 import '../../CSS/DashCards.css';

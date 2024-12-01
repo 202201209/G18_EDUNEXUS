@@ -141,7 +141,7 @@ const viewProfile = async (req, res) => {
     return res.status(500).json({ message: 'Internal server error occurred!!' });
   }
 };
-
+ 
 const editProfile = async (req, res) => {
   
   // Define schema for validation
