@@ -30,6 +30,6 @@
 
 # Environment Variables
 /server/.env
-
-
-/Unit_Testing
+/server/reports
+/server/specs
+/server/.nyc_output
