@@ -4,7 +4,7 @@ require("dotenv").config();
 config();
 
 const pool = new Pool({
-    connectionString: "postgresql://edunexus_user:UsKnNqeuOnOqKfMRVl9DN9aVjwDSUw7a@dpg-csqdt0ggph6c73eaviqg-a.singapore-postgres.render.com/edunexus" + "?sslmode=require",
+    connectionString: process.env.DATABASE_URL + "?sslmode=require",
     ssl: {
       rejectUnauthorized: require  // This allows the connection without certificate validation
     }
