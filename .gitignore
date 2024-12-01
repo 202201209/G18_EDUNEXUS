@@ -22,10 +22,14 @@
 /client/yarn-error.log*
 /client/.env
 
+/client/coverage
+/client/jest.config.js
+
 # Server
 /server/node_modules
 
 # Environment Variables
 /server/.env
+
 
 /Unit_Testing
