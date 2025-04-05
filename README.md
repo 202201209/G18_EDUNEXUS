@@ -130,7 +130,7 @@ We would like to thank our Professor:
 * [**Nishtha Patel**](https://github.com/Nishtha-8104) / [**202201209**](https://github.com/202201209)  
 * [**Rhythm Panchal**](https://github.com/alwaysinmy-rhythm)  
 * [**Jaimin Prajapati**](https://www.github.com/alex) / [**202201228**](https://github.com/202201228)
-* [**Jenil Goswami**](https://github.com/Jenil247)  
+* [**Jenil Goswami**](https://github.com/Jenil2514)  
 * [**Solanki Aryan**](https://github.com/202201239)
 * [**Smit Fefar**](https://github.com/FEFAR-SMIT)
 * [**Vrund Leauva**](https://github.com/vrund1307) 
